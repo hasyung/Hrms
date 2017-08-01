@@ -40,10 +40,6 @@ tags
 .irbrc
 .rspec
 
-config/database.yml
-config/shards.yml
-config/config.yml
-config/push_server.yml
 public/export/*
 
 employee_errors.txt

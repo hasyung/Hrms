@@ -1,0 +1,85 @@
+defaults: &defaults
+  application_name: "Sichuan Airlines Human Resource Management System"
+  logger_host: "127.0.0.1:9927"
+  project: "SichuanAirlineHrms"
+
+  # 上传文件配置
+  upload_url: 'http://192.168.6.99:9001'
+  # 上传扩展名
+  upload_image_extension: ['jpg', 'jpeg', 'gif', 'png', 'bmp']
+
+  grade:
+    validate_rule:
+      scal: [branch_company, positive, deputy]
+      branch_company: [positive, deputy, secondly_positive]
+      positive: [deputy, secondly_positive]
+      deputy: [secondly_positive]
+
+  enum_permit:
+    department_grades: "CodeTable::DepartmentGrade.all.where.not(level: 0)"
+    department_natures: "CodeTable::DepartmentNature.all"
+    locations: "CodeTable::Location.all"
+    channels: "CodeTable::Channel.all"
+    categories: "CodeTable::Category.all"
+    position_schedules: "Schedule.all"
+    education_backgrounds: "CodeTable::EducationBackground.all"
+    degrees: "CodeTable::Degree.all"
+    genders: "CodeTable::Gender.all"
+    marital_status: "CodeTable::MaritalStatus.all"
+    english_levels: "CodeTable::EnglishLevel.all"
+    labor_relations: "Employee::LaborRelation.all"
+    employment_status: "Employee::EmploymentStatus.all"
+    position_natures: "CodeTable::PositionNature.all"
+    political_status: "CodeTable::PoliticalStatus.all"
+    job_title_degrees: "Employee::JobTitleDegree.all"
+    job_types: "Employee::JobType.all"
+
+  enum_type:
+    grade_id: 'department_grades'
+    nature_id: 'department_natures'
+    location_id: 'locations'
+    channel_id: 'channels'
+    category_id: 'categories'
+    schedule_id: 'position_schedules'
+    education_background_id: 'education_backgrounds'
+    degree_id: 'degrees'
+    gender_id: 'genders'
+    marital_status_id: 'marital_status'
+    english_level_id: 'english_levels'
+    labor_relation_id: 'labor_relations'
+    employment_status_id: 'employment_status'
+    position_nature_id : 'position_natures'
+    political_status_id: 'political_status'
+    job_title_degree_id: 'job_title_degrees'
+    job_type_id: 'job_types'
+
+
+  enums:
+    audit_status:
+      '无需审核': 0
+      '待审核': 1
+      '通过': 2
+      '不通过': 3
+
+  query_rule:
+    default_page:
+        page: 1
+        per_page: 20
+    position:
+      sql:
+        position_ids: "positions.id in (?)"
+        name: "positions.name like ?" #like
+        department_id: "positions.department_id = ?"
+        department_ids: "positions.department_id in (?)" #in
+        age: "positions.age" #range(from to)
+        channel_name: "channels.name like ?" #relation model"s column
+        staffing_surpass: "(positions.budgeted_staffing - positions.employees_count)" #超编: 'true'
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

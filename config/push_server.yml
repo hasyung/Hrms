@@ -1,0 +1,11 @@
+development:
+  host: 114.215.142.122
+  port: 9927
+
+test:
+  host: 114.215.142.122
+  port: 9927
+
+production:
+  host: 114.215.142.122
+  port: 9927
