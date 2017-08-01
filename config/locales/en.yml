@@ -1,0 +1,42 @@
+en:
+  log:
+    home:
+      index: "%{username}查看了首页数据, 参数是%{params}，操作结果是%{code}"
+    permissons:
+      index: "%{username}查看了权限数据，参数是%{params}，操作结果是%{code}"
+    departments:
+      index: "%{username}查看了部门数据，参数是%{params}，操作结果是%{code}"
+      addtional: "%{username}查看了附加数据，参数是%{params}，操作结果是%{code}"
+      create: "%{username}创建部门数据，参数是%{params}，操作结果是%{code}"
+  search:
+    department:
+      id: "记录编号"
+      created_at: "创建时间"
+      updated_at: "更新时间"
+      name: "部门名称"
+      description: "部门描述"
+  flow:
+    degree_workflow:
+      flow_name: "个人学历变更"
+      new: "个人提交申请"
+      leader_review: "部门领导审批"
+      hr_review: "人事部审批"
+      accepted: "审批完成"
+      rejected: "审批未通过"
+      events:
+        leader_accept: "同意"
+        leader_reject: "反对"
+        hr_accept: "同意"
+        hr_reject: "反对"
+
+  errors:
+    format: ! '%{attribute} %{message}'
+
+    messages:
+      blank: "不能为空"
+      taken: "已经被使用"
+
+  will_paginate:
+    previous_label: "before"
+    next_label: 'next'
+    page_gap: "&hellip;"

@@ -1,0 +1,1 @@
+json.dinners @dinners

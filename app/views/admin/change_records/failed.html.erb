@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+  <div class="panel-heading">推送失败的异动记录列表</div>
+  <table class="table table-bordered table-striped">
+    <tr>
+      <th class="col-md-1 text-center">编号</th>
+      <th class="col-md-3 text-center">类型</th>
+      <th class="col-md-4 text-center">产生时间</th>
+      <th class="col-md-5 text-center">推送内容</th>
+      <th class="col-md-2 text-center">操作</th>
+    </tr>
+    <% @change_records.each do |record| %>
+      <tr>
+        <td class='col-md-1 text-center'><%= record.id %></td>
+        <td class='col-md-3 text-center'><%= record.change_type %></td>
+        <td class='col-md-4 text-center'><%= record.event_time %></td>
+        <td class='col-md-5 text-center'><%= record.change_data %></td>
+        <td class='col-md-2 text-center'><%= link_to '再次推送', send_again_admin_change_record_path(record), class: 'btn btn-xs btn-primary'%></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+<%= will_paginate(@change_records) %>

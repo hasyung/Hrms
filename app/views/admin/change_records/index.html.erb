@@ -1,0 +1,63 @@
+<div class="col-md-12">
+  <div class="panel panel-default">
+    <!-- <div class="panel-body"> -->
+      <table class="table table-bordered table-striped">
+        <tr>
+          <td style="width: 10%;text-align: center;padding-top: 15px;">异动类型</td>
+          <td style="width: 15%;text-align: center;">
+            <div class="row" style="padding: 2% 19% 0 19%;">
+              <select class="form-control" id="dep_select">
+                <option value="org_add">org_add</option>
+                <option value="org_modify">org_modify</option>
+                <option value="org_delete">org_delete</option>
+
+                <option value="employee_update">employee_update</option>
+                <option value="employee_transfer">employee_transfer</option>
+                <option value="employee_org">employee_org</option>
+                <option value="employee_leader">employee_leader</option>
+                <option value="employee_resign">employee_resign</option>
+                <option value="employee_fire">employee_fire</option>
+                <option value="employee_retire">employee_retire</option>
+                <option value="employee_early_retire">employee_early_retire</option>
+                <option value="employee_outgo">employee_outgo</option>
+                <option value="employee_newbie">employee_newbie</option>
+              </select>
+            </div><!-- /.row -->
+          </td>
+          <td style="width: 10%;text-align: center;padding-top: 15px;">开始日期</td>
+          <td style="width: 15%;text-align: center;">
+            <div class="row" style="padding: 2% 19% 0 19%; position: relative;">
+              <div class="form-group date_picker required holiday_record_date"><div class="input-group date datetimepicker">
+                <input id="start_select" data-date-options='{"locale":"zh_CN","format":"YYYY-MM-DD","dayViewHeaderFormat":"MMMM YYYY"}' class="string date_picker required   form-control" type="text" name="holiday[record_date]" id="holiday_record_date"><span class="input-group-btn"><button class="btn btn-default" type="button">
+                <span class="fa fa-calendar"></span></button></span></div>
+              </div>
+            </div>
+          </td>
+          <td style="width: 10%;text-align: center;padding-top: 15px;">结束日期</td>
+          <td style="width: 15%;text-align: center;">
+            <div class="row" style="padding: 2% 19% 0 19%; position: relative;">
+              <div class="form-group date_picker required holiday_record_date"><div class="input-group date datetimepicker">
+                <input id="end_select" data-date-options='{"locale":"zh_CN","format":"YYYY-MM-DD","dayViewHeaderFormat":"MMMM YYYY"}' class="string date_picker required   form-control" type="text" name="holiday[record_date]" id="holiday_record_date"><span class="input-group-btn"><button class="btn btn-default" type="button">
+                <span class="fa fa-calendar"></span></button></span></div>
+              </div>
+            </div><!-- /.row -->
+          </td>
+          <td style="text-align: center;padding-top: 10px;padding-left: 30px;">
+            <button type="button" class="btn btn-default api-key" id="dep_push">导出xls</button>
+            <span id="dep_result" style="padding-left: 30px;color:red;"></span>
+          </td>
+        </tr>
+      </table>
+    <!-- </div> -->
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('.datetimepicker').datetimepicker();
+  $('#dep_push').click(function(){
+    var start = $('#start_select').val();
+    var end = $('#end_select').val();
+    var change_type = $('#dep_select').val();
+    location.href = '/admin/change_records/export?start_date=' + start + '&end_date=' + end +'&change_type=' + change_type;
+  });
+</script>

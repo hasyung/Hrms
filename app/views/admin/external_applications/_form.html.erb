@@ -1,0 +1,124 @@
+<%= simple_form_for(@external, url: {action: @external.new_record? ? "create" : "update"}) do |f| %>
+
+  <% if @external.errors.any? %>
+    <div class="alert alert-danger alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h3> 错误提示 </h3>
+      <ul>
+        <% @external.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table class="table table-bordered table-striped">
+    <%= f.hidden_field :id, value: @external.try(:id) %>
+
+    <tr>
+      <td class="col-md-3">应用名称</td>
+      <td>
+        <%= f.input :application_name, label: false %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">公司名称</td>
+      <td>
+        <%= f.input :company_name, label: false %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">接口应用标识</td>
+      <td>
+        <%= f.input :api_key, label: false, readonly: true %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">秘钥</td>
+      <td>
+        <%= f.input :api_secret, label: false, readonly: true %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">接口应用ip地址(多个以,分隔)</td>
+      <td>
+        <%= f.input :client_ips,input_html: {value: @external.client_ips.join(",")}, label: false %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">内网ip地址</td>
+      <td>
+        <%= f.input :internal_ip, label: false %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">公网ip地址</td>
+      <td>
+        <%= f.input :public_ip, label: false %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">推送http地址，以http开头</td>
+      <td>
+        <%= f.input :push_url, label: false %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">推送失败重试次数</td>
+      <td>
+        <%= f.input :push_retry_count, label: false %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">是否校验ip集合</td>
+      <td>
+        <%= f.input :check_ip, as: :boolean, label: false %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">是否校验签名</td>
+      <td>
+        <%= f.input :check_signature, as: :boolean, label: false %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">是否校验时间差</td>
+      <td>
+        <%= f.input :check_time, as: :boolean, label: false %>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-md-3">推送类型</td>
+      <td>
+        <%= f.input :push_type, as: :integer, label: false %>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-md-3">email</td>
+      <td>
+        <%= f.input :email, as: :text, label: false %>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-md-3">接口详情描述</td>
+      <td>
+        <%= f.input :description, as: 'text', label: false %>
+      </td>
+    </tr>
+  </table>
+
+  <%= f.submit '保存', class: 'btn btn-primary' %>
+  <%= link_to '返回', :back, class: 'btn btn-default' %>
+
+<% end %>

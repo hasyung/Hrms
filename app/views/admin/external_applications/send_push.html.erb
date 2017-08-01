@@ -1,0 +1,96 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <ul class="nav nav-tabs">
+      <% if @external.push_type == 0%>
+          <li role="presentation"><a href="/admin/external_applications/<%=@external.id%>/debug">数据拉取调试</a></li>
+      <% end %>
+
+      <li role="presentation" class="active"><a href="/admin/external_applications/<%=@external.id%>/send_push">数据推送调试</a></li>
+    </ul>
+  </div>
+  <div class="panel-body">
+    <table class="table table-bordered table-striped">
+      <tr>
+        <td style="width: 15%;text-align: center;padding-top: 15px;">部门变更信息</td>
+        <td style="width: 50%;text-align: center;">
+          <div class="row" style="padding-left: 39%;">
+            <select class="form-control" style="width:200px;" id="dep_select" data="<%= @external.api_key %>">
+              <% if @external.push_type == 0 %>
+                <option value="org_add">org_add</option>
+                <option value="org_modify">org_modify</option>
+                <option value="org_delete">org_delete</option>
+              <%else%>
+                  <option value="position_create">position_create</option>
+                  <option value="position_update">position_update</option>
+                  <option value="position_destroy">position_destroy</option>
+              <%end%>
+            </select>
+          </div><!-- /.row -->
+        </td>
+        <td style="text-align: left;padding-top: 10px;padding-left: 30px;">
+          <button type="button" class="btn btn-default api-key" id="dep_push">推送</button>
+          <span id="dep_result" style="padding-left: 30px;color:red;"></span>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 15%;text-align: center;padding-top: 15px;">人事异动</td>
+        <td style="width: 50%;text-align: center;">
+          <div class="row" style="padding-left: 39%;">
+            <select class="form-control" style="width:200px;" id="change_select">
+              <% if @external.push_type == 0 %>
+                <option value="employee_update">employee_update</option>
+                <option value="employee_transfer">employee_transfer</option>
+                <option value="employee_org">employee_org</option>
+                <option value="employee_leader">employee_leader</option>
+                <option value="employee_resign">employee_resign</option>
+                <option value="employee_fire">employee_fire</option>
+                <option value="employee_retire">employee_retire</option>
+                <option value="employee_early_retire">employee_early_retire</option>
+                <option value="employee_outgo">employee_outgo</option>
+                <option value="employee_newbie">employee_newbie</option>
+              <%else%>
+                  <option value="employee_create">employee_create</option>
+                  <option value="employee_update">employee_update</option>
+                  <option value="employee_dimission">employee_dimission</option>
+                  <option value="employee_special">employee_special</option>
+              <%end%>
+            </select>
+          </div><!-- /.row -->
+        </td>
+        <td style="text-align: left;padding-top: 10px;padding-left: 30px;">
+          <button type="button" class="btn btn-default api-key" id="change_push">推送</button>
+          <span id="change_result" style="padding-left: 30px;color:red;"></span>
+        </td>
+      </tr>
+
+    </table>
+    <div style="padding-left: 30px;font-weight:bold;margin-bottom:30px;">备注：上面的推送会即时推送所选类型最新的一条异动信息</div>
+
+    <%= link_to "返回", admin_external_applications_path, class: 'btn btn-default' %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('#dep_push').click(function(){
+    $.ajax( {
+      url:'/api/external_applications/push?apiKey='+$('#dep_select').attr('data')+'&changeType=' + $('#dep_select').val() ,
+      data:{},
+      type:'get',
+      success:function(data) {
+        $('#dep_result').text(data.messages);
+        window.setTimeout(function(){ $('#dep_result').text('');}, 2000);
+      }
+    });
+  });
+  $('#change_push').click(function(){
+    $.ajax( {
+      url:'/api/external_applications/push?apiKey='+$('#dep_select').attr('data')+'&changeType=' + $('#change_select').val(),
+      data:{},
+      type:'get',
+      success:function(data) {
+        $('#change_result').text(data.messages);
+        window.setTimeout(function(){ $('#change_result').text('');}, 2000);
+      }
+    });
+  });
+</script>

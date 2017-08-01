@@ -1,0 +1,73 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+   设置类型： <%= select_tag :role_name, options_for_select(FlowRelation::ROLE_NAME, params[:role_name]), onchange: "load_action(this.value)" %>
+  </div>
+
+  <%= form_for(@role_menu, url: {action: @role_menu.new_record? ? "create_role_menu" : "edit_role_menu", params: {role_name: params[:role_name]}}, method: @role_menu.new_record? ? :post : :put) do |f| %>
+    <table class="table table-bordered table-hover table-condensed">
+      <% RoleMenu::MENU_CONFIG.each do |key, values| %>
+        <tr>
+          <td width="30%">
+            <div style="margin-left: 20px" style="font-weight:bold">
+              <input id="<%=Digest::MD5.hexdigest(key)%>" onclick="select_childrens('<%=Digest::MD5.hexdigest(key)%>')" type="checkbox" name="menus[keys][]" value='<%= key %>' <%= "checked" if @role_menu.menus.keys.include?(key) %> />
+              <!-- <i class="fa fa-th-large"></i> -->
+              <%= "  #{key}" %>
+            </div>
+          </td>
+        </tr>
+
+        <% values.each do |value| %>
+          <tr>
+            <td width="30%">
+              <div style="margin-left: 60px">
+                <input type="checkbox" name="menus[values][]" class='<%= Digest::MD5.hexdigest(key) %>' onclick="select_parent(this, '<%=Digest::MD5.hexdigest(key)%>')" value='<%= value %>' <%= "checked" if @role_menu.menus.values.flatten.include?(value) %> />
+                <!-- <i class="fa fa-th-list"></i> -->
+                <%= "  #{value}" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+
+    <div style="margin:10px 20px;">
+      <%= f.submit "保存", class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
+
+<style>
+.item {
+  -webkit-column-count: 3;
+}
+</style>
+
+<script>
+function load_action(value){
+  location.href = "role_menus?role_name="+value;
+}
+
+function select_childrens(parent){
+  if($('#' + parent).is(':checked')){
+    $('.' + parent).prop('checked', true);
+  } else {
+    $('.' + parent).prop('checked', false);
+  }
+}
+
+function select_parent(child, parent){
+  if(child.checked == true){
+    $('#' + parent).prop('checked', true);
+  } else {
+    var disable_parent = true;
+    $('.' + parent).each(function(index, value){
+      if(value.checked == true) {
+        disable_parent = false;
+      }
+    });
+    if(disable_parent == true){
+      $('#' + parent).prop('checked', false);
+    }
+  }
+}
+</script>

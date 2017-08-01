@@ -1,0 +1,81 @@
+<div class="col-md-12">
+  <table class="table table-bordered table-striped">
+    <tr>
+      <td class="col-md-3">接口名称</td>
+      <td> <%= @external.application_name %> </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">公司名称</td>
+      <td> <%= @external.company_name %> </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">接口应用标识</td>
+      <td> <%= @external.api_key %> </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">秘钥</td>
+      <td> <%= @external.api_secret %> </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">接口应用ip地址(多个以,分隔)</td>
+      <td> <%= @external.client_ips.join(",") %> </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">内网ip地址</td>
+      <td> <%= @external.internal_ip %> </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">公网ip地址</td>
+      <td> <%= @external.public_ip %> </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">推送http地址</td>
+      <td> <%= @external.push_url %> </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">推送失败重试次数</td>
+      <td> <%= @external.push_retry_count %> </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">是否校验ip集合</td>
+      <td> <%= @external.check_ip %> </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">是否校验签名</td>
+      <td> <%= @external.check_signature %> </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">是否校验时间差</td>
+      <td> <%= @external.check_time %> </td>
+    </tr>
+
+    <tr>
+      <td class="col-md-3">接口详情描述</td>
+      <td> <%= @external.description %> </td>
+    </tr>
+   
+    <tr>
+      <td class="col-md-3">推送类型</td>
+      <td> <%= @external.push_type %> </td>
+    </tr>
+  
+    <tr>
+      <td class="col-md-3">email</td>
+      <td> <%= @external.email %> </td>
+    </tr>
+  </table>
+
+  <%= link_to "返回", admin_external_applications_path, class: 'btn btn-default' %>
+
+</div>

@@ -1,0 +1,27 @@
+<%= simple_form_for(@holiday, url: admin_holidays_path(), method: :post) do |f| %>
+  <% if @holiday.errors.any? %>
+    <div class="alert alert-danger alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h3> 错误提示 </h3>
+      <ul>
+        <% @holiday.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table class="table table-bordered table-striped">
+    <%= f.hidden_field :id, value: @holiday.try(:id) %>
+    <tr>
+      <td class='col-md-3' >自定义假期日期</td>
+      <td><%= f.input :record_date, as: :date_picker, label: false, input_html: {data: {date_options: {maxDate: "#{Date.today.end_of_year}", daysOfWeekDisabled: [0,6]}}} %></td>
+    </tr>
+    <tr>
+      <td>备注</td>
+      <td><%= f.input :note, label: false %></td>
+    </tr>
+  </table>
+  <%= f.submit '保存', class: 'btn btn-primary' %>
+  <%= link_to '返回', :back, class: 'btn btn-default' %>
+<% end %>

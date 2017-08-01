@@ -1,0 +1,2 @@
+module ExternalApi::HomeHelper
+end

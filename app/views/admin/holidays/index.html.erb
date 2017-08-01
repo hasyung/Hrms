@@ -1,0 +1,66 @@
+<div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">自定义节假日</div>
+    <div style="margin-top: 15px; margin-left: 20px;"><%= link_to '新建', new_admin_holiday_path, class: 'btn btn-info' %></div></br>
+
+    <table class="table table-bordered table-striped">
+      <tr>
+        <td style="width: 10%;text-align: center;padding-top: 15px;">开始日期</td>
+        <td style="width: 15%;text-align: center;">
+          <div class="row" style="padding: 2% 19% 0 19%; position: relative;">
+            <div class="form-group date_picker required holiday_record_date"><div class="input-group date datetimepicker">
+              <input id="start_select" data-date-options='{"locale":"zh_CN","format":"YYYY-MM-DD","dayViewHeaderFormat":"MMMM YYYY"}' class="string date_picker required   form-control" type="text" name="holiday[record_date]" id="holiday_record_date"><span class="input-group-btn"><button class="btn btn-default" type="button">
+              <span class="fa fa-calendar"></span></button></span></div>
+            </div>
+          </div>
+        </td>
+        <td style="width: 10%;text-align: center;padding-top: 15px;">结束日期</td>
+        <td style="width: 15%;text-align: center;">
+          <div class="row" style="padding: 2% 19% 0 19%; position: relative;">
+            <div class="form-group date_picker required holiday_record_date"><div class="input-group date datetimepicker">
+              <input id="end_select" data-date-options='{"locale":"zh_CN","format":"YYYY-MM-DD","dayViewHeaderFormat":"MMMM YYYY"}' class="string date_picker required   form-control" type="text" name="holiday[record_date]" id="holiday_record_date"><span class="input-group-btn"><button class="btn btn-default" type="button">
+              <span class="fa fa-calendar"></span></button></span></div>
+            </div>
+          </div><!-- /.row -->
+        </td>
+        <td style="text-align: center;padding-top: 10px;padding-left: 30px;">
+          <button type="button" class="btn btn-default api-key" id="dep_push">筛选</button>
+          <span id="dep_result" style="padding-left: 30px;color:red;"></span>
+        </td>
+      </tr>
+    </table>
+
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th>日期</th>
+        <th>备注</th>
+        <th class="text-center" >操作</th>
+      </tr>
+      <% @holidays.each do |cday| %>
+        <tr>
+          <td><%= cday.record_date.to_s %></td>
+          <td><%= cday.note %></td>
+          <td class="text-center">
+            <%= link_to '删除', admin_holiday_path(cday.id),
+              method: :delete,
+              data: {confirm: '确认删除?' },
+              class: 'btn btn-danger btn-xs'
+            %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+
+  <%= will_paginate @holidays %>
+
+</div>
+
+<script type="text/javascript">
+  $('.datetimepicker').datetimepicker();
+  $('#dep_push').click(function(){
+    var start = $('#start_select').val();
+    var end = $('#end_select').val();
+    location.href = '/admin/holidays?start_date=' + start + '&end_date=' + end;
+  });
+</script>

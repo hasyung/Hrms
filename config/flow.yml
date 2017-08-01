@@ -1,0 +1,237 @@
+defaults: &defaults
+  Flow::AnnualLeave:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: false
+    route_state: 'labors_attendance'
+  Flow::SickLeave:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::SickLeaveInjury:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::OccupationInjury:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::SickLeaveNulliparous:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::PersonalLeave:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: false
+    route_state: 'labors_attendance'
+  Flow::PublicLeave:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: false
+    route_state: 'labors_attendance'
+  Flow::MarriageLeave:
+    params:
+    - marriage_time #结婚日期
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::FuneralLeave:
+    params:
+    - relation #关系/目标
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    - journey #附带路程
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::HomeLeave:
+    params:
+    - relation #关系/目标
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    - journey #附带路程
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::AccreditLeave:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::PrenatalCheckLeave:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    - during_pregnancy #怀孕时段
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::RearNurseLeave:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::WomenLeave:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::MaternityLeave:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::OffsetLeave:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::LactationLeave:
+    params:
+    - start_time
+    - end_time
+    - reason
+    - vacation_days
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::MaternityLeaveLateBirth:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::MaternityLeaveDystocia:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::MaternityLeaveMultipleBirth:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::MaternityLeaveBreastFeeding:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    supplement: true
+    route_state: 'labors_attendance'
+  Flow::MiscarriageLeave:
+    params:
+    - start_time #开始时间
+    - end_time #结束时间
+    - reason #事由
+    - vacation_days #时长
+    - during_pregnancy #怀孕时段
+    supplement: true
+    route_state: 'labors_attendance'
+
+  Flow::AdjustPosition:
+    params:
+    - to_position_id #转入岗位
+    - reason #申请理由
+    supplement: false
+    route_state: 'labors_ajust_position'
+  Flow::Retirement:
+    params:
+    - retirement_date #退休日期
+    supplement: false
+    route_state: 'labors_retirement'
+  Flow::RenewContract:
+    params:
+    - start_date #开始日期
+    - duration #时长
+    supplement: false
+    route_state: 'labors_renew_contract'
+  Flow::EarlyRetirement:
+    params:
+    - reason #申请理由
+    supplement: false
+    route_state: 'labors_early_retirement'
+  Flow::Punishment:
+    params:
+    - reason #处分理由
+    supplement: false
+    route_state: 'labors_punishment'
+  Flow::Dismiss:
+    params:
+    - reason #申请信息
+    supplement: false
+    route_state: 'labors_dismiss'
+  Flow::EmployeeLeaveJob:
+    params:
+    - reason
+    - flow_id
+    supplement: false
+    route_state: 'labors_leave_job'
+  Flow::Resignation:
+    params:
+    - reason #离职原因
+    - leave_date #离职时间
+    supplement: false
+    route_state: 'labors_resignation'
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

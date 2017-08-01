@@ -1,0 +1,76 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <ul class="nav nav-tabs">
+
+      <li role="presentation" class="active"><a href="/admin/external_applications/<%=@external.id%>/debug">数据拉取调试</a></li>
+      <li role="presentation"><a href="/admin/external_applications/<%=@external.id%>/send_push">数据推送调试</a></li>
+    </ul>
+  </div>
+  <div class="panel-body">
+    <div style="margin-bottom: 10px;">
+      <button type="button" class="btn btn-default api-key" style="margin-left: 10.4%;" data="callName=DEPARTMENT&apiKey=<%=@external.api_key%>&requestTime=<%=@time%>&version=1&count=10&lastId=1&fetchAll=0&signature=<%=@signature_1%>">获取机构数据</button>
+      <button type="button" class="btn btn-default api-key" style="margin-left: 20px;" data="callName=EMPLOYEE&apiKey=<%=@external.api_key%>&requestTime=<%=@time%>&version=1&count=10&lastId=1&fetchAll=0&signature=<%=@signature_2%>">获取人事数据</button>
+      <button type="button" class="btn btn-default api-key" style="margin-left: 20px;" data="callName=CHANGE_RECORD&apiKey=<%=@external.api_key%>&requestTime=<%=@time%>&version=1&count=10&lastId=1&fetchAll=0&signature=<%=@signature_3%>">获取异动记录</button>
+      <button type="button" class="btn btn-default api-key" style="margin-left: 20px;" data="callName=UPDATE_PHONE&apiKey=<%=@external.api_key%>&requestTime=<%=@time%>&version=1&employeeNo=003740&telephone=110&mobile=120&signature=<%=@signature_4%>">更新电话号码</button>
+      <button type="button" class="btn btn-default api-key" style="margin-left: 20px;" data="callName=PERFORMANCE&apiKey=<%=@external.api_key%>&requestTime=<%=@time%>&version=1&employeeNo=003740&count=10&lastId=1&signature=<%=@signature_5%>">绩效</button>
+    </div>
+    <table class="table table-bordered table-striped">
+      <tr>
+        <td style="min-width: 100px;padding-top: 30px;">API接口:</td>
+        <td>
+          <textarea style="height: 60px;width: 90%;border: 1px solid #888 !important;" id="api-address" data="<%=@external.id%>"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="width: 10%;"></td>
+        <td>
+          <button type="button" class="btn btn-default" style="margin-left: 2px;" id="calc_signature">计算签名</button>
+          <button type="button" class="btn btn-default" style="margin-left: 20px;" id="fetch_request">发送请求</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="col-md-4"  style="width: 10%;padding-top: 30px;">测试结果:</td>
+        <td>
+          <pre style="height: 300px;width: 90%;margin-top:5px;" id="api-result"></pre>
+        </td>
+      </tr>
+    </table>
+
+    <%= link_to "返回", admin_external_applications_path, class: 'btn btn-default' %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('.api-key').click(function(){
+    $('#api-address').val($(this).attr('data'));
+  });
+
+  $('#calc_signature').click(function(){
+    $.ajax( {
+      url:'/admin/external_applications/' + $('#api-address').attr('data') + '/calc_signature?' + $('#api-address').val(),
+      data:{},
+      type:'post',
+      success:function(data) {
+        $('#api-result').html(JSON.stringify(data, null, "\t"));
+        $('#api-result').attr('class', 'prettyprint');
+        prettyPrint();
+      }
+    });
+  });
+
+  $('#fetch_request').click(function(){
+    $.ajax( {
+      url:'/api/external_applications/execute?' + $('#api-address').val(),
+      data:{},
+      dataType: "json",
+      type:'get',
+      success:function(data) {
+        $('#api-result').html(JSON.stringify(data, null, "\t"));
+        $('#api-result').attr('class', 'prettyprint');
+        prettyPrint();
+      }
+    });
+  });
+</script>

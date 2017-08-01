@@ -1,0 +1,49 @@
+<div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">权限组名列表</div>
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th>组名</th>
+        <th>类型</th>
+        <th>对应权限</th>
+        <th class="text-center" width="120px">操作</th>
+      </tr>
+      <%@permission_groups.each do |permission_group|%>
+        <tr>
+          <td style="width: 150px;"><%= flow_relation_name(permission_group.name) || permission_group.name %></td>
+          <td><%= FlowRelation.roles.include?(permission_group.name) ? "系统" : "用户" %></td>
+          <td>
+            <div class="item">
+              <% @permissions.each_with_index do |permission, index| %>
+                <% if permission_group.permission_ids.include?(permission.id.to_s) %>
+                  <%= permission.name %><br>
+                <% end %>
+              <% end %>
+            </div>
+          </td>
+          <td class="text-center">
+            <%= link_to '编辑', edit_admin_permission_path(permission_group),
+              class: 'btn btn-primary btn-xs'
+            %>
+
+          <% unless FlowRelation.roles.include?(permission_group.name) %>
+            <%= link_to '删除', admin_permission_path(permission_group),
+              method: :delete,
+              data: {confirm: '确认删除' },
+              class: 'btn btn-danger btn-xs'
+            %>
+        <% end %>
+          </td>
+        </tr>
+      <% end %>
+  </table>
+  </div>
+
+  <style>
+    .item {
+      -webkit-column-count: 3;
+    }
+  </style>
+
+  <%= link_to '新建', new_admin_permission_path, class: 'btn btn-info' %>
+</div>

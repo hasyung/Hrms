@@ -1,0 +1,26 @@
+<div class="col-md-12">
+  <table class="table table-bordered table-striped">
+    <tr>
+      <td class="col-md-3">权限组名称</td>
+      <td><%= @permission_group.name %></td>
+    </tr>
+    <tr>
+      <td class="col-md-3">对应权限</td>
+      <td class="item">
+        <% @permissions.each_with_index do |permission, index| %>
+          <% if @permission_group.permission_ids.include?(permission.id.to_s) %>
+            <%= permission.name %><br>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  </table>
+
+  <style>
+  .item {
+    -webkit-column-count: 3;
+  }
+  </style>
+
+  <%= link_to "返回", admin_permissions_path, class: 'btn btn-default' %>
+</div>

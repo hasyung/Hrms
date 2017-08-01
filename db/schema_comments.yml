@@ -1,0 +1,8 @@
+---
+table_comments:
+  permission_groups: "权限分组表"
+column_comments:
+  permission_groups:
+    name: "权限组名"
+    permission_ids: "权限"
+    id: "权限分组表"

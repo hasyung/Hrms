@@ -1,0 +1,38 @@
+<div class="col-md-12">
+  <table class="table table-bordered table-striped">
+    <tr>
+      <td class="col-md-12" colspan="2">日志详情</td>
+    </tr>
+    <tr>
+      <td class="col-md-3">员工编号</td>
+      <td class="col-md-9"><%= @log.employee_no %></td>
+    </tr>
+    <tr>
+      <td class="col-md-3">员工姓名</td>
+      <td class="col-md-9"><%= @log.employee_name %></td>
+    </tr>
+    <tr>
+      <td class="col-md-3">请求控制器</td>
+      <td class="col-md-9"><%= @log.permission_message %></td>
+    </tr>
+    <tr>
+      <td class="col-md-3">请求状态码</td>
+      <td class="col-md-9"><%= @log.response_status %></td>
+    </tr>
+    <tr>
+      <td class="col-md-3">请求IP</td>
+      <td class="col-md-9"><%= @log.request_ip %></td>
+    </tr>
+    <tr>
+      <td class="col-md-3">请求参数</td>
+      <td class="col-md-9"><%= @log.params %></td>
+    </tr>
+    <tr>
+      <td class="col-md-3">报错信息</td>
+      <td class="col-md-9"><%= @log.message %></td>
+    </tr>
+
+  </table>
+
+  <%= link_to "返回", admin_logs_path, class: 'btn btn-default btn-sm' %>
+</div>

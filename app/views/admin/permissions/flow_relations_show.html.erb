@@ -1,0 +1,53 @@
+<%= simple_form_for(@flow_relation, url: confirm_flow_relation_admin_permissions_path(), method: :post) do |f| %>
+  <table class="table table-bordered table-hover table-condensed">
+    <%= f.hidden_field :id, value: @flow_relation.try(:id) %>
+    <tr>
+      <td class="col-md-12" colspan=2><B><%= @department_root.name %></B> 分配 <%= FlowRelation.get_role_name(@role_name) %></td>
+    </tr>
+
+    <tr>
+      <td class="col-md-4">部门名称</td>
+      <td>部门岗位</td>
+    </tr>
+
+    <% @departments.each do |department| %>
+      <tr>
+
+        <td>
+          <div style="<%= judge_offset department %>">
+          <% if department.depth == 2 %>
+            <span style="font-weight:bold"><i class="fa fa-th-large"></i> <%= department.name %></span>
+          <% elsif department.depth == 3 %>
+            <span><i class="fa fa-th-list"></i> <%= department.name %></span>
+          <% elsif department.depth == 4 %>
+            <span><i class="fa fa-th"></i> <%= department.name %></span>
+          <% end %>
+          </div>
+        </td>
+
+        <% if department.positions.present? %>
+          <td class="item">
+            <% department.positions.each do |position| %>
+              <div> <input type="checkbox" name="flow_relation[position_ids][]" <%= "checked" if @flow_relation.position_ids.include?(position.id.to_s) %> value='<%= position.id %>' />&nbsp;&nbsp;<%= "#{position.name}" %> </div>
+            <% end %>
+          </td>
+        <% else %>
+          <td class="text-center">
+            <div> 该部门下无岗位 </div>
+          </td>
+        <% end %>
+
+      </tr>
+    <% end %>
+  </table>
+
+  <style>
+  .item {
+    -webkit-column-count: 2;
+  }
+  </style>
+
+  <%= f.submit "保存", class: 'btn btn-primary' %>
+  <%= link_to "返回", :back, class: 'btn btn-default' %>
+
+<% end %>

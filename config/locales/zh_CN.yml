@@ -1,0 +1,580 @@
+zh_CN:
+  form_data: &form_data
+    start_time: '开始时间'
+    end_time: '结束时间'
+    vacation_days: '请假天数'
+    reason: '申请理由'
+    leave_job_state: '是否离职'
+
+  activerecord:
+    models:
+      employee: '员工'
+      employee_contact_way: '联系方式'
+      employee_personal_info: '其它信息'
+      employee_education_experience: '教育经历'
+      employee_work_experience: '工作经历'
+      employee_family_member: '家庭成员'
+      position: '岗位'
+      specification: '岗位描述书'
+    attributes:
+      employee:
+        name: '姓名'
+        pinyin_name: '拼音姓名'
+        employee_no: '员工编号'
+        gender: '性别'
+        identity_no: '身份证号'
+        birth_place: '出生地'
+        native_place: '籍贯'
+        nationality: '国籍'
+        nation: '民族'
+        political_status: '政治面貌'
+        english_level: '英语等级'
+        marital_status: '婚姻状况'
+        job_title: '职称'
+        job_title_degree: '职称级别'
+        category: '分类'
+        location: '属地化'
+        channel:  '通道'
+        labor_relation: '劳资关系'
+        education_background: '学历'
+        degree: '学位'
+        school: '毕业院校'
+        major: '专业'
+        birthday: '出生日期'
+        start_work_date: '参加工作时间'
+        join_scal_date: '进入公司时间'
+        approve_leave_job_date: '批准离职日期'
+        leave_job_reason: '离职原因'
+        is_delete: '是否已经离职或退养'
+        employment_status: '用工状态'
+        crypted_password: '密码'
+        master_department_serial_number: '主任机构序列号'
+        favicon: '员工头像'
+        favicon_type: '员工头像类型'
+        favicon_size: '员工头像大小'
+        pcategory: '绩效人员分类'
+        department: '部门'
+        duty_rank: '职务职级'
+        position_remark: '岗位备注'
+        technical_duty: '技术职务'
+        identity_name: '身份证姓名'
+        is_stop_salary: '是否停薪调'
+        start_internship_date: '开始实习日期'
+        retirement_date: '退休日期'
+        graduate_date: '毕业时间'
+        change_education_date: '学历变更时间'
+        join_party_date: '入党时间'
+        early_retire_date: '退养时间'
+        technical: '技术等级'
+      employee_contact_way:
+        telephone: '固定电话'
+        mobile: '手机号码'
+        address: '家庭地址'
+        mailing_address: '通信地址'
+        email: '电子邮箱'
+        postcode: '邮政编码'
+        employee: '员工'
+      employee_personal_info:
+        desc1: '描述1'
+        desc2: '描述2'
+        desc3: '描述3'
+        desc4: '描述4'
+        desc5: '描述5'
+        desc6: '描述6'
+        desc7: '描述7'
+        desc8: '描述8'
+        desc9: '描述9'
+        desc10: '描述10'
+        desc11: '描述11'
+        desc12: '描述12'
+        desc13: '描述13'
+        employee: '员工'
+      employee_education_experience:
+        school: '学校'
+        major: '专业'
+        admission_date: '入学时间'
+        graduation_date: '毕业时间'
+        education_background: '学历'
+        education_nature: '教育性质'
+        degree: '学位'
+        witness: '证明人'
+        employee: '员工'
+        category: '分类'
+      employee_family_member:
+        name: '姓名'
+        native_place: '籍贯'
+        birthday: '出生日期'
+        start_work_date: '参加工作时间'
+        married_date: '结婚时间'
+        gender: '性别'
+        nation: '民族'
+        position: '岗位'
+        company: '公司或学校'
+        mobile: '电话'
+        residence_booklet: '户口地址'
+        political_status: '政治面貌'
+        education_background: '教育背景'
+        relation_type: '关系'
+        relation: 'unused'
+        employee: '员工'
+        identity_no: '身份证号'
+      employee_work_experience:
+        company: '公司'
+        department: '部门'
+        position: '岗位'
+        job_desc: '工作内容'
+        job_title: '职务'
+        start_date: '开始时间'
+        end_date: '结束时间'
+        witness: '证明人'
+        employee: '员工'
+        category: '入司前后'
+        employee_category: "分类"
+      position:
+        name: '岗位名称'
+        budgeted_staffing: '编制'
+        oa_file_no: 'oa文件号'
+        post_type: '岗位类别'
+        remark: '备注'
+        department: '所在机构'
+        channel: '通道'
+        schedule: '工作时间制'
+        category: '分类'
+        position_nature: '岗位性质'
+        employees_count: '在岗人数'
+        sort_no: '序号'
+        created_at: '创建时间'
+        updated_at: '修改时间'
+        staffing_remark: '编制备注'
+        temperature_amount: '高温费'
+        cold_subsidy_type: '寒冷补贴'
+      specification:
+        duty: '工作职责'
+        personnel_permission: '人事权限'
+        financial_permission: '财务权限'
+        business_permission: '业务权限'
+        superior: '直属上级'
+        underling: '直属下级'
+        internal_relation: '内部联系'
+        external_relation: '外部联系'
+        qualification: '任职条件'
+        position: '岗位'
+        position_name: '岗位'
+        department_name: '部门'
+      employee_position:
+        employee: '员工'
+        position: '岗位'
+        start_date: '开始日期'
+        end_date: '结束日期'
+        category: '岗位类型'
+
+  enums:
+    audit:
+      auditable_types:
+        employee: '基本信息'
+        employee_contact_way: '联系方式'
+        employee_personal_info: '其它信息'
+        employee_education_experience: '教育经历'
+        employee_family_member: '家庭成员'
+        employee_work_experience: '工作经历'
+        position: '岗位'
+        specification: '岗位描述书'
+        employee_position: '员工岗位信息'
+      action:
+        create: '新增'
+        update: '修改'
+        destroy: '删除'
+
+  salary:
+    category:
+      leader_base: '干部'
+      manager15_base: '管理15'
+      manager12_base: '管理12'
+      flyer_legend_base: '飞行员-荣誉'
+      flyer_leader_base: '飞行员-机长'
+      flyer_copilot_base: '飞行员-副驾'
+      flyer_teacher_A_base: '飞行员-教员A'
+      flyer_teacher_B_base: '飞行员-教员B'
+      flyer_teacher_C_base: '飞行员-教员C'
+      flyer_student_base: '飞行员-学员'
+      air_steward_base: '空乘空保'
+      service_b_normal_cleaner_base: '服务B-清洁工'
+      service_b_parking_cleaner_base: '服务B-机坪清洁工'
+      service_b_hotel_service_base: '服务B-宾馆服务员'
+      service_b_green_base: '服务B-绿化'
+      service_b_front_desk_base: '服务B-总台服务员'
+      service_b_security_guard_base: '服务B-保安、空保装备保管员'
+      service_b_input_base: '服务B-数据录入'
+      service_b_guard_leader1_base: '服务B-保安队长(一类)'
+      service_b_device_keeper_base: '服务B-保管(库房、培训设备、器械)'
+      service_b_unloading_base: '服务B-外站装卸'
+      service_b_making_water_base: '服务B-制水工'
+      service_b_add_water_base: '服务B-加水工、排污工'
+      service_b_guard_leader2_base: '服务B-保安队长(二类)'
+      service_b_water_light_base: '服务B-水电维修'
+      service_b_car_repair_base: '服务B-汽修工'
+      service_b_airline_keeper_base: '服务B-机务工装设备/客舱供应库管'
+      service_c_base: '服务C'
+      air_observer_base: '空中观察员'
+      front_run_base: '前场运行监察'
+      information_perf: '信息通道'
+      airline_business_perf: '航务航材'
+      manage_market_perf: '管理营销'
+      service_c_1_perf: '服务C1'
+      service_c_2_perf: '服务C2'
+      service_c_3_perf: '服务C3'
+      service_c_driving_perf: '服务C-驾驶'
+      material_leader_perf: '航务/航材技术类H'
+      information_leader_perf: '信息技术类E'
+      service_leader_perf: '机务维修技术类W'
+      market_leader_perf: '营销类Y/管理A类'
+      service_normal_perf: '机务维修(普通员工)'
+      service_tech_perf: '机务维修(技术骨干)'
+
+
+
+  flow:
+    messages:
+      to_sponsor: "%{reviewer}%{event}你的%{flow_name}申请"
+      to_reviewer: "你有一个来自%{username}的%{flow_name}申请需要审批"
+      end: "%{employee_name}的%{flow_name}申请%{state}"
+    state:
+      accepted: '已通过'
+      rejected: '已驳回'
+      checking: '审批中'
+      actived: '已生效'
+      repeal: '已撤销'
+    type:
+      Flow::OffsetLeave: '补休假'
+      Flow::EarlyRetirement: "员工退养"
+      Flow::AdjustPosition: '岗位调整'
+      Flow::EmployeeLeaveJob: '员工离职单'
+      Flow::Resignation: '员工辞职'
+      Flow::Retirement: '员工退休'
+      Flow::RenewContract: '合同续签'
+      Flow::Punishment: '员工处分'
+      Flow::Dismiss: '员工辞退'
+      Flow::AccreditLeave: '派驻人员休假'
+      Flow::AnnualLeave: '年假'
+      Flow::FuneralLeave: '丧假'
+      Flow::HomeLeave: '探亲假'
+      Flow::MarriageLeave: '婚假'
+      Flow::MaternityLeave: '产假'
+      Flow::MaternityLeaveBreastFeeding: '产假(母乳喂养)'
+      Flow::MaternityLeaveDystocia: '产假(剖腹产、难产)'
+      Flow::MaternityLeaveLateBirth: '产假(晚育)'
+      Flow::MaternityLeaveMultipleBirth: '产假(多胞胎)'
+      Flow::MiscarriageLeave: '产假(流产)'
+      Flow::PersonalLeave: '事假'
+      Flow::PrenatalCheckLeave: '产前孕期检查假'
+      Flow::RearNurseLeave: '生育护理假'
+      Flow::SickLeave: '病假'
+      Flow::SickLeaveInjury: '病假(工伤待定)'
+      Flow::SickLeaveNulliparous: '病假(怀孕待产)'
+      Flow::WomenLeave: '女工假'
+      Flow::LactationLeave: '哺乳假'
+      Flow::OccupationInjury: '病假(工伤待定)-工伤假'
+      Flow::PublicLeave: '公假'
+      Flow::RecuperateLeave: '疗养假'
+      general: '通知'
+      important: '重要通知'
+      contract: '合同到期通知'
+      agreement: '协议到期通知'
+
+    Flow::OffsetLeave:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::AnnualLeave:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::SickLeave:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::SickLeaveInjury:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::OccupationInjury:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::SickLeaveNulliparous:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::PersonalLeave:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::PublicLeave:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::MarriageLeave:
+      form_data:
+        marriage_time: '结婚日期'
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::FuneralLeave:
+      form_data:
+        <<: *form_data
+        relation: '关系'
+        journey: '附带路程'
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::HomeLeave:
+      form_data:
+        <<: *form_data
+        relation: '关系'
+        journey: '附带路程'
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::AccreditLeave:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::PrenatalCheckLeave:
+      form_data:
+        <<: *form_data
+        during_pregnancy: '怀孕时段'
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::RearNurseLeave:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::WomenLeave:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::MaternityLeave:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::LactationLeave:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::MaternityLeaveLateBirth:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::MaternityLeaveDystocia:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::MaternityLeaveMultipleBirth:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::MaternityLeaveBreastFeeding:
+      form_data:
+        <<: *form_data
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+    Flow::MiscarriageLeave:
+      form_data:
+        <<: *form_data
+        during_pregnancy: 怀孕时段
+      todo_message: "%{department_position_name}【%{receptor_name}】的请假申请(%{leave_desc})需要您的处理"
+
+    Flow::AdjustPosition:
+      form_data:
+        to_department_name: '转入部门'
+        to_position_name: '转入岗位'
+        channel: '通道'
+        budgeted_staffing: '在编情况'
+        reason: '申请理由'
+      todo_message: "%{department_position_name}【%{receptor_name}】的调岗申请需要您的处理"
+    Flow::EarlyRetirement:
+      form_data:
+        leave_job_state: '是否离职'
+        reason: "申请理由"
+      todo_message: "%{department_position_name}【%{receptor_name}】的退养申请需要您的处理"
+    Flow::Retirement:
+      form_data:
+        retirement_date: '退休日期'
+      todo_message: "%{department_position_name}【%{receptor_name}】的退休申请需要您的处理"
+    Flow::Punishment:
+      form_data:
+        reason: '处分理由'
+      todo_message: "对%{department_position_name}【%{receptor_name}】的处分申请需要您的处理"
+    Flow::Dismiss:
+      form_data:
+        reason: '申请理由'
+      todo_message: "对%{department_position_name}【%{receptor_name}】的辞退申请需要您的处理"
+    Flow::Resignation:
+      form_data:
+        reason: '离职原因'
+        leave_date: '拟离职时间'
+      todo_message: "%{department_position_name}【%{receptor_name}】的辞职申请需要您的处理"
+    Flow::EmployeeLeaveJob:
+      form_data:
+        reason: '离职原因'
+      todo_message: "对%{department_position_name}【%{receptor_name}】的离职通知单需要您的处理"
+    Flow::RenewContract:
+      form_data:
+        duration_date: '本次合同期限'
+        last_duration_date: '上次合同期限'
+      todo_message: "对%{department_position_name}【%{receptor_name}】的合同续签通知需要您的处理"
+    Flow::RecuperateLeave:
+      form_data:
+        <<: *form_data
+        reason: '申请理由'
+
+  errors:
+    format: ! '%{attribute} %{message}'
+
+    messages:
+      blank: '不能为空'
+      taken: '已经被占用'
+
+      Position:
+        name: '岗位名称不能为空'
+        budgeted_staffing: '岗位编制不能为空'
+        oa_file_no: '文件号不能为空'
+        department_id: '机构不能为空'
+        channel_id: '岗位通道不能为空'
+      Employee:
+        name: '姓名不能为空'
+        nationality: '国籍不能为空'
+        nation: '民族不能为空'
+        native_place: '籍贯不能为空'
+        birth_place: '出生地不能为空'
+        identity_no: '身份证号不能为空'
+        marital_status_id: '婚姻状况不能为空'
+        join_scal_date: '到岗时间不能为空'
+        political_status_id: '政治面貌不能为空'
+        labor_relation_id: '用工性质不能为空'
+        category_id: '分类不能为空'
+        channel_id: '通道不能为空'
+        employee_no: '员工编号不能为空'
+        employee_no_taken: '员工编号已经被占用'
+        join_scal_date: '到岗时间和实习时间必填一个'
+        birthday: '生日不能为空'
+        education_background_id: '学历不能为空'
+      Employee::FamilyMember:
+        name: '姓名不能为空'
+        relation_type: '关系不能为空'
+        gender: '性别不能为空'
+      Employee::EducationExperience:
+        school: '学校不能为空'
+        major: '专业不能为空'
+        admission_date: '入学时间不能为空'
+        graduation_date: '毕业时间不能为空'
+        witness: '证明人不能为空'
+      Department:
+        name: '机构名称不能为空'
+        parent_id: '父机构不能为空'
+      Employee::SearchCondition:
+        employee_id: '员工不能为空'
+        condition: '条件不能为空'
+      Flow::AdjustPosition:
+        to_position_id: '转入岗位不能为空'
+        reason: '申请理由不能为空'
+      Flow::AccreditLeave:
+        start_time: '开始时间不能为空'
+        end_time: '结束时间不能为空'
+        vacation_days: '时长不能为空'
+        reason: '事由不能为空'
+      Flow::AnnualLeave:
+        start_time: '开始时间不能为空'
+        end_time: '结束时间不能为空'
+        vacation_days: '时长不能为空'
+        reason: '事由不能为空'
+      Flow::Dismiss:
+        reason: '事由不能为空'
+      Flow::EarlyRetirement:
+        reason: '事由不能为空'
+      Flow::EmployeeLeaveJob:
+        reason: '事由不能为空'
+      Flow::FuneralLeave:
+        relation: '关系不能为空'
+        start_time: '开始时间不能为空'
+        end_time: '结束时间不能为空'
+        vacation_days: '时长不能为空'
+        reason: '事由不能为空'
+      Flow::HomeLeave:
+        relation: '目标不能为空'
+        start_time: '开始时间不能为空'
+        end_time: '结束时间不能为空'
+        vacation_days: '时长不能为空'
+        reason: '事由不能为空'
+      Flow::MarriageLeave:
+        marriage_time: '结婚日期不能为空'
+        start_time: '开始时间不能为空'
+        end_time: '结束时间不能为空'
+        vacation_days: '时长不能为空'
+        reason: '事由不能为空'
+        attachment_ids: "附件不能为空"
+      Flow::MiscarriageLeave:
+        during_pregnancy: '怀孕时段不能为空'
+        start_time: '开始时间不能为空'
+        end_time: '结束时间不能为空'
+        vacation_days: '时长不能为空'
+        reason: '事由不能为空'
+      Flow::PersonalLeave:
+        start_time: '开始时间不能为空'
+        end_time: '结束时间不能为空'
+        vacation_days: '时长不能为空'
+        reason: '事由不能为空'
+      Flow::PublicLeave:
+        start_time: '开始时间不能为空'
+        end_time: '结束时间不能为空'
+        vacation_days: '时长不能为空'
+        reason: '事由不能为空'
+      Flow::Punishment:
+        reason: '时长不能为空'
+      Flow::RearNurseLeave:
+        start_time: '开始时间不能为空'
+        end_time: '结束时间不能为空'
+        vacation_days: '时长不能为空'
+        reason: '事由不能为空'
+      Flow::RenewContract:
+        start_date: '开始日期不能为空'
+      Flow::Resignation:
+        leave_date: '离职时间'
+        reason: '离职原因'
+      Flow::SickLeave:
+        start_time: '开始时间不能为空'
+        end_time: '结束时间不能为空'
+        vacation_days: '时长不能为空'
+        reason: '事由不能为空'
+      Flow::SickLeaveInjury:
+        start_time: '开始时间不能为空'
+        end_time: '结束时间不能为空'
+        vacation_days: '时长不能为空'
+        reason: '事由不能为空'
+      Flow::SickLeaveNulliparous:
+        start_time: '开始时间不能为空'
+        end_time: '结束时间不能为空'
+        vacation_days: '时长不能为空'
+        reason: '事由不能为空'
+      Flow::WomenLeave:
+        start_time: '开始时间不能为空'
+        vacation_days: '时长不能为空'
+        reason: '事由不能为空'
+      Punishment:
+        category: '处分类别不能为空'
+        desc: '处分描述不能为空'
+        start_date: '结束日期存在时,开始日期不能为空'
+        end_date: '开始日期存在时,结束日期不能为空'
+        start_date_too_large: '开始时间不能大于结束时间'
+        reward_date: '奖励日期不能为空'
+      Flow::Retirement:
+        retirement_date: '退休日期不能为空'
+
+
+
+
+  will_paginate:
+    previous_label: "前一页"
+    next_label: "后一页"
+    page_gap: "&hellip;"
+
+  datepicker:
+    dformat: '%d/%m/%Y'             # display format of the date (this is the default, can be ommited)
+    pformat: 'YYYY-MM-DD'           # picking format of the date (this is the default, can be ommited)
+  timepicker:
+    dformat: '%R'                   # display format of the time (this is the default, can be ommited)
+    pformat: 'HH:mm'                # picking format of the time (this is the default, can be ommited)
+  dayViewHeaderFormat: 'MMMM YYYY'  # picking format of the time (this is the default, can be ommited)

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>个人履历</title>
+    <style type="text/css">
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+      .resume-wrap {
+        font-size: 18px;
+        padding: 50px;
+        position: relative; 
+      }
+
+      .resume-avator {
+        width: 110px;
+      }
+
+      .resume-avator img {
+        width: 100%;
+      }
+
+      .resume-wrap .resume-header {
+        border-bottom: 1px solid #000;
+        padding-bottom: 20px; 
+      }
+
+      .resume-wrap .resume-header span {
+        font-size: 32px;
+        margin-right: 10px; 
+      }
+
+      .resume-wrap .resume-btn-group {
+        position: absolute;
+        right: 20px;
+        top: 20px; 
+      }
+
+      .resume-wrap .resume-btn-group .md-icon-button {
+        border-radius: 14px;
+        height: 28px;
+        line-height: 28px;
+        width: 28px; 
+      }
+
+      .resume-wrap .resume-btn-group .md-icon-button .md-icon {
+        height: 18px;
+        vertical-align: middle;
+        width: 18px; 
+      }
+
+      .resume-wrap .resume-section {
+        border-bottom: 1px solid #000;
+        padding: 30px 0;
+        width: 860px;
+      }
+
+      .resume-wrap .resume-section-left h4 {
+        margin: 0;
+      }
+
+      .resume-wrap .resume-section.last {
+        padding-bottom: 0; 
+      }
+
+      .resume-wrap .resume-section:last-child {
+        border-bottom: 0; 
+      }
+
+      .resume-wrap .resume-section .resume-section-left {
+        width: 150px;
+        display: block;
+      }
+
+      .resume-wrap .resume-section .resume-section-left h4 {
+        font-size: 16px;
+        font-weight: normal; 
+      }
+
+      .resume-wrap .resume-section .resume-section-right {
+        margin-left: 0;
+        width: 710px;
+      }
+
+      .resume-wrap .resume-section h5.resume-row {
+        font-weight: normal;
+        margin: 0;
+        margin-bottom: 10px;
+      }
+
+      .resume-wrap .resume-section .resume-row td, .resume-wrap .resume-section .resume-row th {
+        font-size: 14px; 
+      }
+
+      .resume-wrap .resume-section .resume-item {
+        height: 36px;
+        width: 355px;
+        /*padding-left: 90px;
+          position: relative;*/
+      }
+
+      .resume-wrap .resume-section .control-label {
+        color: #000;
+        font-size: 14px;
+        display: inline-block;
+        width: 90px;
+      }
+
+      .resume-wrap .resume-section .form-content {
+        font-size: 14px;
+        padding-top: 1px;
+      }
+
+      .resume-wrap .table {
+        border-top: 1px solid #000; 
+      }
+
+      .resume-wrap .table.last {
+        margin-bottom: 0; 
+      }
+
+      .resume-wrap .table thead th {
+        border-bottom: 1px solid #000;
+        border-right: 1px solid #000;
+        text-align: left;
+        padding: 6px 12px;
+      }
+
+      .resume-wrap .table thead th:last-child {
+        border-right: 0; 
+      }
+
+      .resume-wrap .table tbody td {
+        border-bottom: 1px solid #000;
+        border-right: 1px solid #000;
+        text-align: left;
+        padding: 6px 12px;
+      }
+
+      .resume-wrap .table tbody td:last-child {
+        border-right: 0; 
+      }
+    </style>
+  </head>
+
+  <body>
+    <div style="width: 960px;" class="resume-wrap">
+      <div class="resume-header">
+        <span><%= @employee.name %></span>
+        个人履历
+      </div>
+      <div class="resume-body">
+        <table class="resume-section">
+          <tr>
+            <td class="resume-section-left">
+              <div class="resume-avator">
+                <% if @employee.favicon.present? %>
+                  <img src="<%= Setting.upload_url + @employee.favicon.middle.url %>" >
+                <% else %>
+                  <img src="<%= Setting.upload_url + ApplicationController.helpers.default_favicon(@employee, 'middle') %>" >
+                <% end %>
+              </div>
+            </td>
+
+            <td class="resume-section-right">
+              <table>
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">性别</span>
+                    <span class="form-content"><%= @employee.gender.try(:display_name) %></span>
+                  </td>
+                  <td class="resume-item">
+                    <span class="control-label">身份证号</span>
+                    <span class="form-content"><%= @employee.identity_no %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">国籍</span>
+                    <span class="form-content"><%= @employee.nationality %></span>
+                  </td>
+                  <td class="resume-item">
+                    <span class="control-label">民族</span>
+                    <span class="form-content"><%= @employee.nation %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">户籍地址</span>
+                    <span class="form-content"><%= @employee.native_place %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td colspan="2" class="resume-item">
+                    <span class="control-label">出生地点</span>
+                    <span class="form-content"><%= @employee.birth_place %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">政治面貌</span>
+                    <span class="form-content"><%= @employee.political_status.try(:display_name) %></span>
+                  </td>
+                  <td class="resume-item">
+                    <span class="control-label">婚姻状况</span>
+                    <span class="form-content"><%= @employee.marital_status.try(:display_name) %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">学历</span>
+                    <span class="form-content"><%= @employee.education_background.try(:display_name) %></span>
+                  </td>
+                  <td class="resume-item">
+                    <span class="control-label">学位</span>
+                    <span class="form-content"><%= @employee.degree.try(:display_name) %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">毕业院校</span>
+                    <span class="form-content"><%= @employee.school %></span>
+                  </td>
+                  <td class="resume-item">
+                    <span class="control-label">专业</span>
+                    <span class="form-content"><%= @employee.major %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">毕业时间</span>
+                    <span class="form-content"><%= @employee.graduate_date %></span>
+                  </td>
+                </tr>
+
+                <% @employee.languages.each do |language| %>
+                  <tr>
+                    <td class="resume-item">
+                      <span class="control-label">语种</span>
+                      <span class="form-content"><%= language.name %></span>
+                    </td>
+                    <td class="resume-item">
+                      <span class="control-label">等级</span>
+                      <span class="control-content"><%= language.grade %></span>
+                    </td>
+                  </tr>
+                <% end %>
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">技术等级</span>
+                    <span class="form-content"><%= @employee.technical %></span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+
+        <table class="resume-section">
+          <tr>
+            <td class="resume-section-left">
+              <h4>联系方式</h4>
+            </td>
+
+            <td class="resume-section-right">
+              <table>
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">手机号码</span>
+                    <span class="form-content"><%= @contact.try(:mobile) %></span>
+                  </td>
+                  <td class="resume-item">
+                    <span class="control-label">电子邮箱</span>
+                    <span class="form-content"><%= @contact.try(:email) %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td colspan="2" class="resume-item block">
+                    <span class="control-label">家庭住址</span>
+                    <span class="form-content"><%= @contact.try(:address) %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td colspan="2" class="resume-item">
+                    <span class="control-label">固定电话</span>
+                    <span class="form-content"><%= @contact.try(:telephone) %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td colspan="2" class="resume-item block">
+                    <span class="control-label">通信地址</span>
+                    <span class="form-content"><%= @contact.try(:mailing_address) %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td colspan="2" class="resume-item">
+                    <span class="control-label">邮政编码</span>
+                    <span class="form-content"><%= @contact.try(:postcode) %></span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+
+        <table class="resume-section">
+          <tr>
+            <td class="resume-section-left">
+              <h4>家庭主要成员情况</h4>
+            </td>
+
+            <td class="resume-section-right">
+              <h5 class="resume-row">配偶</h5>
+
+              <table>
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">姓名</span>
+                    <span class="form-content"><%= @mate.try(:name) %></span>
+                  </td>
+                  <td class="resume-item">
+                    <span class="control-label">性别</span>
+                    <span class="form-content"><%= @mate.try(:gender) %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">籍贯</span>
+                    <span class="form-content"><%= @mate.try(:native_place) %></span>
+                  </td>
+                  <td class="resume-item">
+                    <span class="control-label">民族</span>
+                    <span class="form-content"><%= @mate.try(:nation) %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">出生年月</span>
+                    <span class="form-content"><%= @mate.try(:birthday) %></span>
+                  </td>
+                  <td class="resume-item">
+                    <span class="control-label">文化程度</span>
+                    <span class="form-content"><%= @mate.try(:education_background) %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">政治面貌</span>
+                    <span class="form-content"><%= @mate.try(:political_status) %></span>
+                  </td>
+                  <td class="resume-item">
+                    <span class="control-label">工作单位</span>
+                    <span class="form-content"><%= @mate.try(:company) %></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">职务</span>
+                    <span class="form-content"><%= @mate.try(:position) %></span>
+                  </td>
+                  <td class="resume-item">
+                    <span class="control-label">联系方式</span>
+                    <span class="form-content"><%= @mate.try(:mobile) %></span>
+                  </td>
+                </tr>
+              </table>
+
+              <h5 class="resume-row">子女情况</h5>
+              <div class="resume-row">
+                <table class="table table-mc-light-blue table-bordered" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th style="width: 85px;">姓名</th>
+                      <th style="width: 80px;">关系</th>
+                      <th style="width: 80px;">性别</th>
+                      <th style="width: 120px;">出生年月</th>
+                      <th style="width: 180px;">户口所在地</th>
+                      <th style="width: 160px;">学校或工作单位</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @children.each do |child| %>
+                      <tr>
+                        <td style="width: 85px;"><%= child.name %></td>
+                        <td style="width: 80px;"><%= child.relation_type %></td>
+                        <td style="width: 80px;"><%= child.gender %></td>
+                        <td style="width: 120px;"><%= child.birthday %></td>
+                        <td style="width: 180px;"><%= child.residence_booklet %></td>
+                        <td style="width: 160px;"><%= child.company %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+
+              <h5 class="resume-row" style="margin-top: 20px;">父母、兄妹、配偶父母情况</h5>
+              <div class="resume-row">
+                <table class="table table-mc-light-blue table-bordered last" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th style="width: 85px;">姓名</th>
+                      <th style="width: 80px;">关系</th>
+                      <th style="width: 80px;">性别</th>
+                      <th style="width: 120px;">出生年月</th>
+                      <th style="width: 180px;">常住户口所在地</th>
+                      <th style="width: 160px;">学校或工作单位</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @other_relations.each do |other| %>
+                      <tr>
+                        <td><%= other.name %></td>
+                        <td><%= other.relation_type %></td>
+                        <td><%= other.gender %></td>
+                        <td><%= other.birthday %></td>
+                        <td><%= other.residence_booklet %></td>
+                        <td><%= other.company %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <table class="resume-section">
+          <tr>
+            <td class="resume-section-left"><h4>教育经历</h4></td>
+            <% unless @education_experiences.empty? %>
+              <% @education_experiences.each do |edu| %>
+                <td class="resume-section-right">
+                  <table>
+                    <tr class="resume-row">
+                      <td class="resume-item">
+                        <span class="control-label">入学日期</span>
+                        <span class="form-content"><%= edu.admission_date %></span>
+                      </td>
+                      <td class="resume-item">
+                        <span class="control-label">毕业日期</span>
+                        <span class="form-content"><%= edu.graduation_date %></span>
+                      </td>
+                    </tr>
+
+                    <tr class="resume-row">
+                      <td class="resume-item">
+                        <span class="control-label">毕业院校</span>
+                        <span class="form-content"><%= edu.school %></span>
+                      </td>
+                      <td class="resume-item">
+                        <span class="control-label">专业</span>
+                        <span class="form-content"><%= edu.major %></span>
+                      </td>
+                    </tr>
+
+                    <tr class="resume-row">
+                      <td class="resume-item">
+                        <span class="control-label">学历</span>
+                        <span class="form-content"><%= edu.education_background.try(:display_name) %></span>
+                      </td>
+                      <td class="resume-item">
+                        <span class="control-label">学位</span>
+                        <span class="form-content"><%= edu.degree.try(:display_name) %></span>
+                      </td>
+                    </tr>
+
+                    <tr class="resume-row">
+                      <td colspan="2" class="resume-item">
+                        <span class="control-label">证明人</span>
+                        <span class="form-content"><%= edu.witness %></span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              <% end %>
+            <% end %>
+          </tr>
+        </table>
+
+        <table class="resume-section">
+          <tr>
+            <td class="resume-section-left">
+              <h4>工作后培训经历</h4>
+            </td>
+
+            <td class="resume-section-right">
+              <table>
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">开始日期</span>
+                    <span class="form-content"></span>
+                  </td>
+                  <td class="resume-item">
+                    <span class="control-label">结束日期</span>
+                    <span class="form-content"></span>
+                  </td>
+                </tr>
+
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">培训课程</span>
+                    <span class="form-content"></span>
+                  </td>
+                  <td class="resume-item">
+                    <span class="control-label">培训课时</span>
+                    <span class="form-content"></span>
+                  </td>
+                </tr>
+                <tr class="resume-row">
+                  <td class="resume-item">
+                    <span class="control-label">是否全勤</span>
+                    <span class="form-content"></span>
+                  </td>
+                  <td class="resume-item">
+                    <span class="control-label">考核成绩</span>
+                    <span class="form-content"></span>
+                  </td>
+                </tr>
+                <tr class="resume-row">
+                  <td colspan="2" class="resume-item auto-height">
+                    <span class="control-label">培训内容</span>
+                    <span class="form-content">
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+
+        <table class="resume-section">
+          <tr>
+            <td class="resume-section-left"><h4>工作经历</h4></td>
+
+            <td class="resume-section-right">
+              <% unless @before_work_experiences.empty? %>
+                <% @before_work_experiences.each do |work| %>
+                  <table>
+                    <tr class="resume-row">
+                      <td class="resume-item">
+                        <span class="control-label">开始日期</span>
+                        <span class="form-content"><%= work.start_date %></span>
+                      </td>
+                      <td class="resume-item">
+                        <span class="control-label">结束日期</span>
+                        <span class="form-content"><%= work.end_date %></span>
+                      </td>
+                    </tr>
+
+                    <tr class="resume-row">
+                      <td class="resume-item">
+                        <span class="control-label">单位名称</span>
+                        <span class="form-content"><%= work.company %></span>
+                      </td>
+                      <td class="resume-item">
+                        <span class="control-label">任职部门</span>
+                        <span class="form-content"><%= work.department %></span>
+                      </td>
+                    </tr>
+
+                    <tr class="resume-row">
+                      <td class="resume-item block">
+                        <span class="control-label">担任职位</span>
+                        <span class="form-content"><%= work.position %></span>
+                      </td>
+                      <td class="resume-item">
+                        <span class="control-label">证明人</span>
+                        <span class="form-content"><%= work.witness %></span>
+                      </td>
+                    </tr>
+
+                    <tr class="resume-row">
+                      <td colspan="2" class="resume-item auto-height">
+                        <span class="control-label">工作描述</span>
+                        <span class="form-content"><%= work.job_desc %></span>
+                      </td>
+                    </tr>
+                  </table>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        </table>
+
+        <table class="resume-section last">
+          <tr>
+            <td class="resume-section-left"><h4>到川航后任职记录</h4></td>
+
+            <td class="resume-section-right">
+              <% unless @after_work_experiences.empty? %>
+                <% @after_work_experiences.each do |work| %>
+                  <table>
+                    <tr class="resume-row">
+                      <td class="resume-item">
+                        <span class="control-label">开始日期</span>
+                        <span class="form-content"><%= work.start_date %></span>
+                      </td>
+                      <td class="resume-item">
+                        <span class="control-label">结束日期</span>
+                        <span class="form-content"><%= work.end_date || '至今' %></span>
+                      </td>
+                    </tr>
+                    <tr class="resume-row">
+                      <td class="resume-item">
+                        <span class="control-label">担任职务</span>
+                        <span class="form-content"><%= work.position %></span>
+                      </td>
+                      <td class="resume-item">
+                        <span class="control-label">任职部门</span>
+                        <span class="form-content"><%= work.department %></span>
+                      </td>
+                    </tr>
+                    <tr class="resume-row">
+                      <td colspan="2" class="resume-item">
+                        <span class="control-label">证明人</span>
+                        <span class="form-content"><%= work.witness %></span>
+                      </td>
+                    </tr>
+                  </table>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

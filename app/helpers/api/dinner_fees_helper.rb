@@ -1,0 +1,2 @@
+module Api::DinnerFeesHelper
+end

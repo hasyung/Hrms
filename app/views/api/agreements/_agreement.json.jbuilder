@@ -1,0 +1,10 @@
+json.id agreement.id
+json.employee_id agreement.employee_id
+json.employee_name agreement.employee_name
+json.employee_no agreement.employee_no
+json.department_name agreement.department_name
+json.position_name agreement.position_name
+json.apply_type agreement.apply_type
+json.start_date agreement.start_date
+json.end_date agreement.end_date
+json.note agreement.note

@@ -1,0 +1,21 @@
+<div class="col-md-12">
+  <table class="table table-bordered table-striped">
+    <tr>
+      <th>文件名称</th>
+      <th class="text-center">文件大小</th>
+      <th class="text-center">创建时间</th>
+      <th class="text-center">下载</th>
+    </tr>
+    <%@files.each do |file|%>
+      <tr>
+        <td><%=file[:filename]%></td>
+        <td class="text-center"><%=number_to_human_size(file[:size])%></td>
+        <td class="text-center"><%=file[:mtime].strftime("%Y-%m-%d %H:%M")%></td>
+        <td class="text-center"><a class="btn-mini" href="/admin/backups/download?filename=<%=file[:filename]%>"><i class="fa fa-download"></i></a></td>
+      </tr>
+    <%end%>
+    <tr>
+      <td colspan="4"><i class="fa fa-bullhorn"></i> 共 <%=@files.size%> 个数据库备份文件</td>
+    </tr>
+  </table>
+</div>

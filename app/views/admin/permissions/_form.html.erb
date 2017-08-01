@@ -1,0 +1,59 @@
+<%= form_for(@permission_group, :url => {:action => @permission_group.new_record? ? "create" : "update"}) do |f| %>
+  <% if @permission_group.errors.any? %>
+    <div class="alert alert-danger alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h3> 错误提示 </h3>
+      <ul>
+        <% @permission_group.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table class="table table-bordered table-striped">
+    <tr>
+      <td class="col-md-3">权限组名称</td>
+      <% if !@permission_group.new_record? && FlowRelation.roles.include?(@permission_group.name) %>
+        <td><%= f.text_field :name, readonly: true, class: "form-control input-sm col-md-2", style: "width: 200px" %></td>
+      <% else %>
+        <td><%= f.text_field :name, class: "form-control input-sm col-md-2", style: "width: 200px" %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td class="col-md-3">对应权限</td>
+      <td class = "item">
+        <label>
+          <input type="checkbox" name="permission_ids[]" id='get-all-permissions'>
+          全选
+        </label>
+        <% @permissions.each_with_index do |permission, index| %>
+          <div>
+            <input type="checkbox" class='permission' name="permission_group[permission_ids][]" value='<%= permission.id %>' <%= "checked" if @permission_group.permission_ids.include?(permission.id.to_s) %> /> <%= "#{permission.name}" %>
+          </div>
+      <% end %>
+      </td>
+    </tr>
+  </table>
+
+  <style>
+  .item {
+    -webkit-column-count: 3;
+  }
+  </style>
+
+  <%= f.submit "保存", class: 'btn btn-primary' %>
+  <%= link_to "返回", admin_permissions_path, class: 'btn btn-default' %>
+<% end %>
+
+<script type="text/javascript">
+  $(function(){
+    $('#get-all-permissions').click(function(){
+      if($(this).is(':checked')){
+        $('.permission').prop('checked', true);
+      } else {
+        $('.permission').prop('checked', false);
+      }
+    });
+  });
+</script>

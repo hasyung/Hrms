@@ -1,0 +1,1539 @@
+defaults: &defaults
+  default:
+      page: 1
+      per_page: 60
+      date_from: '1949-10-01'
+      int_from: 0
+      int_to: 100
+      sort: 'created_at desc'
+
+  position:
+    cold_subsidy_type:
+      type: String
+      query_type: Equal
+      sql: 'positions.cold_subsidy_type = ?'
+      desc: '根据发放标准(甲/乙)类查询'
+      example: '(甲/乙)类'
+    name:
+      type: String
+      query_type: Like
+      sql: "positions.name like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "positions.department_id in (?)"
+      value_getter: 'get_department_ids'
+      desc: '根据多个部门id查询'
+      example: [12,14]
+    channel_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "positions.channel_id in (?)"
+      desc: '根据岗位通道查询'
+      example: [12, 14]
+    staffing_surpass:
+      query_type: Boolean
+      type: Boolean
+      sql_true: "(positions.budgeted_staffing - positions.employees_count) < 0"
+      sql_false: "(positions.budgeted_staffing - positions.employees_count) >= 0"
+      desc: "根据是否超编查询"
+      example: true
+    budgeted_staffinged:
+      query_type: Equal
+      type: Integer
+      sql: "(case when positions.budgeted_staffing > positions.employees_count then -1 when positions.budgeted_staffing = positions.employees_count then 0 when positions.budgeted_staffing < positions.employees_count then 1 end) = ?"
+      desc: "1表示超编，0表示正常编制，-1表示缺编"
+      example: ''
+    created_at:
+      type: Range-Date
+      sql: "date(positions.created_at) >= date(?) and date(positions.created_at) <= date(?)"
+      min: ''
+      max: ''
+      desc: '根据创建时间查询'
+      sort: 'positions.created_at'
+      example: ''
+    staffing_remark:
+      query_type: Boolean
+      type: Boolean
+      sql_true: "positions.staffing_remark != '' and positions.staffing_remark is not null"
+      sql_false: "positions.staffing_remark = '' or positions.staffing_remark is null"
+
+  employee:
+    name:
+      type: String
+      query_type: Like
+      sql: "employees.name like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "employees.employee_no like ?"
+      desc: '根据编码模糊查询'
+      example: '001'
+    identity_no:
+      type: String
+      query_type: Like
+      sql: "employees.identity_no like ?"
+      desc: '根据身份证模糊查询'
+      example: '51382'
+    language_name:
+      type: String
+      query_type: Equal
+      sql: "languages.name = ?"
+      desc: "根据语言种类查询"
+      example: "英语"
+    language_grade:
+      type: String
+      query_type: Like
+      sql: "languages.grade like ?"
+      desc: "根据语言登记查询"
+      example: "英语4级"
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "positions.department_id in (?)"
+      desc: '根据多个机构id查询'
+      relation: 'positions'
+      example: [12,14]
+    position_name:
+      query_type: Like
+      type: String
+      sql: "positions.name like ?"
+      desc: '根据岗位名称模糊查询'
+      relation: 'positions'
+      example: '张三'
+    category_id:
+      query_type: Equal
+      type: Integer
+      sql: "employees.category_id = ?"
+      desc: '根据分类查询'
+      example: 12
+    category_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.category_id in (?)"
+      desc: '根据分类查询'
+      example: 12
+    channel_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.channel_id in (?)"
+      desc: '根据人员通道查询'
+      example: [12, 14]
+    location:
+      query_type: Like
+      type: String
+      sql: "employees.location like ?"
+      desc: '根据属地化查询'
+      example: ['张三']
+    birthday:
+      type: Range-Date
+      sql: "date(employees.birthday) >= date(?) and date(employees.birthday) <= date(?)"
+      min: ''
+      max: ''
+      desc: '根据出生日期查询'
+      sort: 'employees.birthday'
+      example: ''
+    start_work_date:
+      type: Range-Date
+      sql: "(employees.start_work_date = 'null' AND date(employees.join_scal_date) >= date(?) AND date(employees.join_scal_date) <= date(?)) OR (employees.start_work_date != 'null' AND date(employees.start_work_date) >= date(?) AND date(employees.start_work_date) <= date(?))"
+      min: ''
+      max: ''
+      desc: '根据参工时间或进入公司时间查询'
+      example: ''
+    join_scal_date:
+      type: Range-Date
+      sql: "(date(employees.join_scal_date) >= date(?) AND date(employees.join_scal_date) <= date(?) AND employees.start_internship_date IS NULL) OR (date(employees.start_internship_date) >= date(?) AND (employees.start_internship_date) <= date(?))"
+      min: ''
+      max: ''
+      desc: "根据进入公司时间查询，默认新进员工页面传递距今一年的时间"
+      sort: 'employees.join_scal_date desc'
+      example: "2014-10-12"
+    month:
+      type: String
+      query_type: String_Equal
+      sql: "(DATE_FORMAT(employees.join_scal_date, '%Y-%m') = ? and employees.start_internship_date IS NULL) OR (DATE_FORMAT(employees.start_internship_date, '%Y-%m') = ?)"
+      desc: '按照月份查找新进员工'
+      example: '2016-04'
+    start_internship_date:
+      type: Range-Date
+      sql: "date(employees.start_internship_date) >= date(?) AND (employees.start_internship_date) <= date(?)"
+      min: ''
+      max: ''
+      desc: "根据员工的实习时间来判断是否是新近员工"
+      sort: 'employees.start_internship_date desc'
+    new_join_date:
+      type: Range-Date
+      sql: "(date(employees.start_internship_date) >= date(?) AND (employees.start_internship_date) <= date(?)) OR (date(employees.join_scal_date) >= date(?) AND date(employees.join_scal_date) <= date(?))"
+      min: ''
+      max: ''
+      desc: "提供时间区间来界定新员工"
+      sort: 'employees.start_internship_date desc, employees.join_scal_date desc'
+    labor_relation_id:
+      query_type: Equal
+      type: Integer
+      sql: "employees.labor_relation_id = ?"
+      desc: '根据劳资关系查询'
+      example: 12
+    employment_status_id:
+      query_type: Equal
+      type: Integer
+      sql: "employees.employment_status_id = ?"
+      desc: '根据用工状态查询'
+      example: 12
+    employee_category:
+      query_type: Equal
+      type: String
+      sql: "employees.pcategory = ?"
+      desc: "根据考核人员分类查询"
+      example: "员工，基层干部，中层干部，主官"
+    annuity_status:
+      query_type: Boolean
+      type: Boolean
+      sql_true: 'employees.annuity_status = 1'
+      sql_false: 'employees.annuity_status = 0'
+      desc: "根据员工绩效状态查询"
+      example: "true/false"
+    gender_id:
+      query_type: Equal
+      type: Integer
+      sql: 'employees.gender_id = ?'
+      desc: '根据性别查询'
+    duty_rank_id:
+      query_type: Equal
+      type: Integer
+      sql: 'employees.duty_rank_id = ?'
+      desc: '根据职务职级查询'
+    grade_id:
+      query_type: Equal
+      type: Integer
+      sql: 'departments.grade_id = ?'
+      desc: '根据机构职级查询'
+
+  employee_audit:
+    name:
+      type: String
+      query_type: Like
+      sql: "employees.name like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "employees.employee_no like ?"
+      desc: '根据编码模糊查询'
+      example: '001'
+    created_at:
+      type: Range-Date
+      sql: "date(audits.created_at) >= date(?) and date(audits.created_at) <= date(?)"
+      min: ''
+      max: ''
+      sort: 'audits.created_at'
+      desc: '根据创建时间查询'
+      example: ''
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      desc: '根据多个机构id查询'
+      example: [12,14]
+    auditable_type:
+      query_type: Equal
+      type: String
+      sql: 'audits.auditable_type = ?'
+
+  position_audit:
+    name:
+      type: String
+      query_type: Like
+      sql: "positions.name like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "positions.department_id in (?)"
+      desc: '根据多个部门id查询'
+      example: [12,14]
+    created_at:
+      type: Range-Date
+      sql: "date(audits.created_at) >= date(?) and date(audits.created_at) <= date(?)"
+      min: ''
+      max: ''
+      sort: 'audits.created_at'
+      desc: '根据创建时间查询'
+      example: ''
+    has_remark:
+      query_type: Boolean
+      type: Boolean
+      sql_true: "audits.remark != '' and audits.remark is not null"
+      sql_false: "audits.remark = '' or audits.remark is null"
+
+  leave_employee:
+    name:
+      type: String
+      query_type: Like
+      sql: "leave_employees.name like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    department:
+      type: String
+      query_type: Like
+      sql: "leave_employees.department like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "leave_employees.employee_no like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    labor_relation:
+      type: String
+      query_type: Like
+      sql: "leave_employees.labor_relation like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    file_no:
+      type: String
+      query_type: Like
+      sql: "leave_employees.file_no like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    position_name:
+      type: String
+      query_type: Like
+      sql: "leave_employees.position like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    employment_status:
+      type: String
+      query_type: Like
+      sql: "leave_employees.employment_status like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    channel:
+      type: String
+      query_type: Like
+      sql: "leave_employees.channel like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    gender:
+      type: String
+      query_type: Like
+      sql: "leave_employees.gender like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    identity_no:
+      type: String
+      query_type: Like
+      sql: "leave_employees.identity_no like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    birthday:
+      type: Range-Date
+      sql: "date(leave_employees.birthday) >= date(?) and date(leave_employees.birthday) <= date(?)"
+      min: ''
+      max: ''
+      sort: 'leave_employees.birthday'
+      desc: '根据出生时间查询'
+      example: ''
+    change_date:
+      type: Range-Date
+      sql: "date(leave_employees.change_date) >= date(?) and date(leave_employees.change_date) <= date(?)"
+      min: ''
+      max: ''
+      sort: 'leave_employees.change_date'
+      desc: '根据变动时间查询'
+      example: ''
+    arrive_position_date:
+      type: Range-Date
+      sql: "date(leave_employees.arrive_position_date) >= date(?) and date(leave_employees.arrive_position_date) <= date(?)"
+      min: ''
+      max: ''
+      sort: 'leave_employees.arrive_position_date'
+      desc: '根据到岗时间查询'
+      example: ''
+    month:
+      type: String
+      query_type: Equal
+      sql: "DATE_FORMAT(leave_employees.change_date, '%Y-%m') = ?"
+      desc: '月份查询离职人员'
+      example: '2016-04'
+
+  early_retire_employee:
+    name:
+      type: String
+      query_type: Like
+      sql: "early_retire_employees.name like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    department:
+      type: String
+      query_type: Like
+      sql: "early_retire_employees.department like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "early_retire_employees.employee_no like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    labor_relation:
+      type: String
+      query_type: Like
+      sql: "early_retire_employees.labor_relation like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    file_no:
+      type: String
+      query_type: Like
+      sql: "early_retire_employees.file_no like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    position_name:
+      type: String
+      query_type: Like
+      sql: "early_retire_employees.position like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    employment_status:
+      type: String
+      query_type: Like
+      sql: "early_retire_employees.employment_status like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    channel:
+      type: String
+      query_type: Like
+      sql: "early_retire_employees.channel like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    gender:
+      type: String
+      query_type: Like
+      sql: "early_retire_employees.gender like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    identity_no:
+      type: String
+      query_type: Like
+      sql: "early_retire_employees.identity_no like ?"
+      desc: '根据名称模糊查询'
+      example: '张三'
+    birthday:
+      type: Range-Date
+      sql: "date(early_retire_employees.birthday) >= date(?) and date(early_retire_employees.birthday) <= date(?)"
+      min: ''
+      max: ''
+      sort: 'early_retire_employees.birthday'
+      desc: '根据出生时间查询'
+      example: ''
+    change_date:
+      type: Range-Date
+      sql: "date(early_retire_employees.change_date) >= date(?) and date(early_retire_employees.change_date) <= date(?)"
+      min: ''
+      max: ''
+      sort: 'early_retire_employees.change_date'
+      desc: '根据变动时间查询'
+      example: ''
+    arrive_position_date:
+      type: Range-Date
+      sql: "date(early_retire_employees.arrive_position_date) >= date(?) and date(early_retire_employees.arrive_position_date) <= date(?)"
+      min: ''
+      max: ''
+      sort: 'early_retire_employees.arrive_position_date'
+      desc: '根据到岗时间查询'
+      example: ''
+
+  contract:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "contracts.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+      example: '张三'
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      relation: 'employee'
+      desc: '根据多个部门id查询'
+    employee_no:
+      type: String
+      query_type: Equal
+      sql: "contracts.employee_no = ?"
+      desc: "根据员工编号查询"
+    department_name:
+      type: String
+      query_type: Like
+      sql: "contracts.department_name like ?"
+      desc: '根据岗位名称模糊查询'
+      example: '人力资源部'
+    start_date:
+      type: Range-Date
+      sql: "date(contracts.start_date) >= date(?) and date(contracts.start_date) <= date(?)"
+      min: ''
+      max: ''
+      desc: '根据合同到期时间查询'
+      sort: 'contracts.start_date'
+      example: ''
+    status:
+      type: String
+      query_type: Equal
+      sql: "contracts.status = ?"
+      desc: '根据员工状态查询'
+      example: '退休'
+    end_date:
+      type: Range-Date
+      sql: "date(contracts.end_date) >= date(?) and date(contracts.end_date) <= date(?)"
+      min: ''
+      max: ''
+      desc: '根据合同到期时间查询'
+      sort: 'contracts.end_date'
+      example: ''
+    apply_type:
+      type: String
+      query_type: Equal
+      sql: 'contracts.apply_type = ?'
+      desc: '根据用工性质查询'
+      example: '合同制'
+    notes:
+      query_type: Boolean
+      type: Boolean
+      sql_true: "length(contracts.notes) > '0'"
+      sql_false: "contracts.notes is NULL OR length(contracts.notes) = '0'"
+      desc: '根据时候有备注查询'
+      example: true
+
+  attendance:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "employees.name like ?"
+      desc: '根据员工姓名模糊查询'
+      example: '张三'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "employees.employee_no like ?"
+      desc: '根据编码模糊查询'
+      example: '001'
+    attendance_type:
+      type: String
+      query_type: Equal
+      sql: "attendances.attendance_type = ?"
+      desc: '根据考勤类别查询'
+      example: '迟到'
+    created_at:
+      type: Range-Date
+      sql: "date(attendances.create_date) >= date(?) and date(attendances.create_date) <= date(?)"
+      min: ''
+      max: ''
+      desc: '根据创建考勤记录的日期'
+      sort: 'attendances.created_at desc'
+      example: ''
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      desc: '根据多个部门id查询'
+      example: [12,14]
+    channel_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.channel_id in (?)"
+      desc: '根据通道查询'
+      example: [12, 14]
+
+  performance_allege:
+    name:
+      type: String
+      query_type: Like
+      sql: "performances.employee_name like ?"
+      relation: 'performance'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "performances.employee_no like ?"
+      relation: 'performance'
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+    result:
+      type: String
+      query_type: Like
+      sql: "performances.result like ?"
+      relation: 'performance'
+    created_at:
+      type: Range-Date
+      sql: "date(performance_alleges.created_at) >= date(?) and date(performance_alleges.created_at) <= date(?)"
+      sort: 'performance_alleges.created_at desc'
+    outcome:
+      type: String
+      query_type: Like
+      sql: "performance_alleges.outcome like ?"
+    is_managed:
+      query_type: Boolean
+      type: Boolean
+      sql_true: "performance_alleges.outcome = '通过' or performance_alleges.outcome = '驳回'"
+      sql_false: "(performance_alleges.outcome != '通过' and performance_alleges.outcome != '驳回') or performance_alleges.outcome is null"
+
+  performance:
+    name:
+      type: String
+      query_type: Like
+      sql: "performances.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+      example: '张三'
+    employee_no:
+      type: String
+      query_type: Equal
+      sql: "performances.employee_no = ?"
+      desc: '根据员工编号查询'
+      example: '003740'
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      relation: 'employee'
+      desc: '根据多个部门id查询'
+      example: [12,14]
+    month_assess_time:
+      type: String
+      query_type: Equal
+      sql: 'date_format(performances.assess_time, "%Y-%m") = ? AND performances.category = "month"'
+      desc: "月度绩效查询"
+      example: '2015-01'
+    year_assess_time:
+      type: String
+      query_type: Equal
+      sql: 'date_format(performances.assess_time, "%Y") = ? AND performances.category = "year"'
+      desc: "年度绩效查询"
+      example: '2015'
+    season_assess_time:
+      type: String
+      query_type: Equal
+      sql: 'concat_ws("-", year(performances.assess_time), quarter(performances.assess_time)) = ? AND performances.category = "season"'
+      desc: "季度绩效查询"
+      example: '2015-1'
+    employee_category:
+      type: String
+      query_type: Equal
+      sql: 'performances.employee_category = ?'
+      desc: '根据绩效员工分类查询'
+      example: '主官'
+    result:
+      type: String
+      query_type: Equal
+      sql: 'performances.result = ?'
+      desc: '根据绩效结果查询'
+      example: '优秀'
+
+  flow:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "employees.name like ?"
+      relation: 'receptor'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "employees.employee_no like ?"
+      relation: 'receptor'
+    channel_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.channel_id in (?)"
+      relation: 'receptor'
+    birthday:
+      type: Range-Date
+      sql: "date(employees.birthday) >= date(?) and date(employees.birthday) <= date(?)"
+      relation: 'receptor'
+    gender_id:
+      query_type: Equal
+      type: Integer
+      sql: "employees.gender_id = ?"
+      relation: 'receptor'
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      relation: 'receptor'
+    created_at:
+      type: Range-Date
+      sql: "date(flows.created_at) >= date(?) and date(flows.created_at) <= date(?)"
+    join_scal_date:
+      type: Range-Date
+      sql: "date(flows.join_scal_date) >= date(?) and date(flows.join_scal_date) <= date(?)"
+    updated_at:
+      type: Range-Date
+      sql: "date(flows.updated_at) >= date(?) and date(flows.updated_at) <= date(?)"
+    flow_types:
+      query_type: In
+      type: Array-String
+      sql: "flows.type in (?)"
+    workflow_state:
+      type: String
+      sql: "flows.workflow_state = ?"
+    workflow_states:
+      query_type: In
+      type: Array-String
+      sql: "flows.workflow_state in (?)" 
+    leave_job_state:
+      type: String
+      query_type: Like
+      sql: "leave_job_state like ?"
+    leave_date:
+      type: Range-Date
+      sql: "date(flows.end_leave_date) >= date(?) AND date(flows.start_leave_date) <= date(?)"
+      desc: "根据假期的起止时间来查询"
+    name:
+      type: String
+      query_type: Like
+      sql: "flows.name like ?"
+
+  cabin_vacation_imports:
+    name:
+      type: String
+      query_type: Like
+      sql: "cabin_vacation_imports.leave_type like ?"
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "cabin_vacation_imports.employee_name like ?"
+
+  social_person_setup:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "social_person_setups.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "social_person_setups.employee_no like ?"
+      desc: '根据员工编号查询'
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      relation: 'employee'
+      desc: '根据部门ID查询'
+    social_location:
+      type: String
+      query_type: Like
+      sql: 'social_person_setups.social_location like ?'
+      desc: '根据社保属地模糊查询'
+    social_account:
+      type: String
+      query_type: Equal
+      sql: "social_person_setups.social_account = ?"
+      desc: "根据员工社保账号筛选"
+
+  social_record:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "social_records.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "social_records.employee_no like ?"
+      desc: '根据员工编号查询'
+    channel_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.channel_id in (?)"
+      relation: 'employee'
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      relation: 'employee'
+      desc: '根据部门ID查询'
+    month:
+      type: String
+      sql:  "social_records.compute_month = ?"
+    calc_month:
+      type: Range-String
+      sql: "social_records.compute_month >= ? and social_records.compute_month <= ?"
+
+  social_change_info:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "social_change_infos.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "social_change_infos.employee_no like ?"
+      desc: '根据员工编号查询'
+
+  attendance_summary:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "attendance_summaries.employee_name like ?"
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "attendance_summaries.employee_no like ?"
+    summary_date:
+      type: Date
+      sql: "attendance_summary_status_managers.summary_date = ?"
+      relation: 'attendance_summary_status_manager'
+    department_ids:
+      type: Array-Integer
+      query_type: In
+      sql: "attendance_summaries.department_id in (?)"
+
+  annuity_apply:
+    employee_no:
+      type: String
+      query_type: Equal
+      sql: "annuity_applies.employee_no = ?"
+      desc: '根据员工编号查询年金申请记录'
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "annuity_applies.employee_name like ?"
+      desc: '根据员工姓名查询年金申请记录'
+
+  annuity:
+    name:
+      type: String
+      query_type: Like
+      sql: "annuities.employee_name like ?"
+      desc: "根据员工姓名模糊查询"
+    employee_no:
+      type: String
+      query_type: Equal
+      sql: "annuities.employee_no = ?"
+      desc: "根据员工编号查询"
+    cal_date:
+      type: Range-String
+      sql: "annuities.cal_date >= ? and annuities.cal_date <= ?"
+      min: ''
+      max: ''
+      desc: '根据年金计算月度查询'
+      example: ''
+
+  salary_person_setup:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "employees.name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "employees.employee_no like ?"
+      desc: '根据员工编号查询'
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      relation: 'employee'
+      desc: '根据部门ID查询'
+    channel_ids:
+      query_type: In
+      type: Array-Integer
+      sql: 'employees.channel_id in (?)'
+      desc: '根据岗位通道查询'
+    labor_relation_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.labor_relation_id in (?)"
+      desc: '根据劳资关系查询'
+      example: 12
+    is_salary_special:
+      query_type: Boolean
+      type: Boolean
+      sql_true: 'salary_person_setups.is_salary_special = 1'
+      sql_false: 'salary_person_setups.is_salary_special = 0'
+      desc: "是否是特殊薪酬人员"
+
+  performance_salary:
+    notes:
+      type: Boolean
+      query_type: Boolean
+      sql_false: "performance_salaries.notes = ''"
+      sql_true: "performance_salaries.notes != ''"
+    month:
+      type: String
+      sql:  "performance_salaries.month = ?"
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "performance_salaries.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    channel_ids:
+      query_type: In
+      type: Array-Integer
+      sql: 'performance_salaries.channel_id in (?)'
+      desc: '根据岗位通道查询'
+    department_name:
+      type: String
+      query_type: Like
+      sql:  "performance_salaries.department_name like ?"
+    position_name:
+      type: String
+      query_type: Like
+      sql: "performance_salaries.position_name like ?"
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "performance_salaries.employee_no like ?"
+
+
+  basic_salary:
+    notes:
+      type: Boolean
+      query_type: Boolean
+      sql_false: "basic_salaries.notes = ''"
+      sql_true: "basic_salaries.notes != ''"
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "basic_salaries.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "basic_salaries.employee_no like ?"
+      desc: '根据员工编号查询'
+    month:
+      type: String
+      sql:  "basic_salaries.month = ?"
+    department_name:
+      type: String
+      query_type: Like
+      sql:  "basic_salaries.department_name like ?"
+    position_name:
+      type: String
+      query_type: Like
+      sql: "basic_salaries.position_name like ?"  
+
+  allowance:
+    notes:
+      type: Boolean
+      query_type: Boolean
+      sql_true: "allowances.notes != ''"
+      sql_false: "allowances.notes = ''"
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "allowances.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "allowances.employee_no like ?"
+      desc: '根据员工编号查询'
+    month:
+      type: String
+      sql:  "allowances.month = ?"
+    department_name:
+      type: String
+      query_type: Like
+      sql: "allowances.department_name like ?"
+    position_name:
+      type: String
+      query_type: Like
+      sql: "allowances.position_name like ?"
+
+  position_record:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: 'position_records.employee_name like ?'
+    employee_no:
+      type: String
+      query_type: Equal
+      sql: 'position_records.employee_no = ?'
+    labor_relation_ids:
+      query_type: In
+      type: Array-Integer
+      sql: 'position_records.labor_relation_id in (?)'
+    change_date:
+      type: Range-Date
+      sql: "position_records.change_date >= date(?) AND position_records.change_date <= date(?)"
+      min: ''
+      max: ''
+      sort: 'position_records.created_at desc'
+    channel_name:
+      type: String
+      sql: "channel_name = ?"
+    month:
+      type: String
+      sql: "DATE_FORMAT(change_date,'%Y-%m') = ?"
+
+  land_allowance:
+    notes:
+      type: Boolean
+      query_type: Boolean
+      sql_true: "land_allowances.notes != ''"
+      sql_false: "land_allowances.notes = ''"
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "land_allowances.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "land_allowances.employee_no like ?"
+      desc: '根据员工编号查询'
+    month:
+      type: String
+      sql:  "land_allowances.month = ?"
+    department_name:
+      type: String
+      query_type: Like
+      sql:  "land_allowances.department_name like ?"
+    position_name:
+      type: String
+      query_type: Like
+      sql: "land_allowances.position_name like ?" 
+
+  reward:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "rewards.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "rewards.employee_no like ?"
+      desc: '根据员工编号查询'
+    month:
+      type: String
+      sql:  "rewards.month = ?"
+    department_name:
+      type: String
+      query_type: Like
+      sql:  "rewards.department_name like ?"
+    position_name:
+      type: String
+      query_type: Like
+      sql: "rewards.position_name like ?"
+
+  airline_fee:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "airline_fees.employee_name like ?"
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "airline_fees.employee_no like ?"
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      relation: 'employee'
+      desc: '根据部门ID查询'
+    month:
+      type: String
+      sql:  "airline_fees.month = ?"
+
+  hours_fee:
+    notes:
+      type: Boolean
+      query_type: Boolean
+      sql_false: "hours_fees.notes = ''"
+      sql_true: "hours_fees.notes != ''"
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "hours_fees.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "hours_fees.employee_no like ?"
+      desc: '根据员工编号查询'
+    department_ids:
+      query_type: Ihourn
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      relation: 'employee'
+      desc: '根据部门ID查询'
+    channel_ids:
+      query_type: In
+      type: Array-Integer
+      sql: 'hours_fees.channel_id in (?)'
+      desc: '根据岗位通道查询'
+    month:
+      type: String
+      sql:  "hours_fees.month = ?"
+    hours_fee_category:
+      type: String
+      sql:  "hours_fees.hours_fee_category = ?"
+      relation: 'employee'
+    department_name:
+      type: String
+      query_type: Like
+      sql: "hours_fees.department_name like ?"
+    position_name:
+      type: String
+      query_type: Like
+      sql: "hours_fees.position_name like ?"
+
+  bus_fee:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "bus_fees.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "bus_fees.employee_no like ?"
+      desc: '根据员工编号查询'
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      relation: 'employee'
+      desc: '根据部门ID查询'
+    channel_ids:
+      query_type: In
+      type: Array-Integer
+      sql: 'employees.channel_id in (?)'
+      relation: 'employee'
+      desc: '根据岗位通道查询'
+    month:
+      type: String
+      sql:  "bus_fees.month = ?"
+    department_name:
+      type: String
+      query_type: Like
+      sql: "bus_fees.department_name like ?"
+    position_name:
+      type: String
+      query_type: Like
+      sql: "bus_fees.position_name like ?"
+
+  security_fee:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "security_fees.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "security_fees.employee_no like ?"
+      desc: '根据员工编号查询'
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      relation: 'employee'
+      desc: '根据部门ID查询'
+    channel_ids:
+      query_type: In
+      type: Array-Integer
+      sql: 'employees.channel_id in (?)'
+      relation: 'employee'
+      desc: '根据岗位通道查询'
+    month:
+      type: String
+      sql:  "security_fees.month = ?"
+    notes:
+      type: Boolean
+      query_type: Boolean
+      sql_false: "security_fees.notes = ''"
+      sql_true: "security_fees.notes != ''"
+    department_name:
+      type: String
+      query_type: Like
+      sql: "security_fees.department_name like ?"
+    position_name:
+      type: String
+      query_type: Like
+      sql: "security_fees.position_name like ?"
+
+  official_car:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "official_cars.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "official_cars.employee_no like ?"
+      desc: '根据员工编号查询'
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      relation: 'employee'
+      desc: '根据部门ID查询'
+    channel_ids:
+      query_type: In
+      type: Array-Integer
+      sql: 'employees.channel_id in (?)'
+      relation: 'employee'
+      desc: '根据岗位通道查询'
+    month:
+      type: String
+      sql:  "official_cars.month = ?"
+    department_name:
+      type: String
+      query_type: Like
+      sql: "official_cars.department_name like ?"
+    position_name:
+      type: String
+      query_type: Like
+      sql: "official_cars.position_name like ?"
+
+  salary_overview:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "salary_overviews.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "salary_overviews.employee_no like ?"
+      desc: '根据员工编号查询'
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      relation: 'employee'
+      desc: '根据部门ID查询'
+    channel_ids:
+      query_type: In
+      type: Array-Integer
+      sql: 'salary_overviews.channel_id in (?)'
+      desc: '根据岗位通道查询'
+    month:
+      type: String
+      sql:  "salary_overviews.month = ?"
+    department_name:
+      type: String
+      query_type: Like
+      sql: "salary_overviews.department_name like ?"
+    position_name:
+      type: String
+      query_type: Like
+      sql: "salary_overviews.position_name like ?"
+
+  salary_change:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "salary_changes.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "salary_changes.employee_no like ?"
+      desc: '根据员工编号查询'
+    category:
+      type: String
+      sql:  "salary_changes.category = ?"
+
+  salary_grade_change:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "salary_grade_changes.employee_name like ?"
+      desc: "根据员工姓名模糊查询"
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "salary_grade_changes.employee_no like ?"
+      desc: '根据员工编号查询'
+    channel_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "salary_grade_changes.channel_id in (?)"
+      desc: "根据员工通道查询"
+    department_ids:
+      type: Array-Integer
+      query_type: In
+      sql: "employees.department_id in (?)"
+      relation: 'employees'
+      desc: "根据机构名字查询"
+
+  temperature_amount:
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "positions.department_id in (?)"
+    temperature_amount:
+      query_type: Equal
+      type: Integer
+      sql:  "positions.temperature_amount = ?"
+
+  communicate_allowance:
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "positions.department_id in (?)"
+    communicate_allowance:
+      query_type: Equal
+      type: Integer
+      sql:  "positions.communicate_allowance = ?"
+
+  transport_fee:
+    notes:
+      type: Boolean
+      query_type: Boolean
+      sql_true: "transport_fees.notes != ''"
+      sql_false: "transport_fees.notes = ''"
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "transport_fees.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "transport_fees.employee_no like ?"
+      desc: '根据员工编号查询'
+    month:
+      type: String
+      sql:  "transport_fees.month = ?"
+    department_name:
+      type: String
+      query_type: Like
+      sql: "transport_fees.department_name like ?"
+    position_name:
+      type: String
+      query_type: Like
+      sql: "transport_fees.position_name like ?"  
+
+  keep_salary:
+    notes:
+      type: Boolean
+      query_type: Boolean
+      sql_false: "keep_salaries.notes = ''"
+      sql_true: "keep_salaries.notes != ''"
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "keep_salaries.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "keep_salaries.employee_no like ?"
+      desc: '根据员工编号查询'
+    month:
+      type: String
+      sql: "keep_salaries.month = ?"
+    department_name:
+      type: String
+      query_type: Like
+      sql: "keep_salaries.department_name like ?"
+    position_name:
+      type: String
+      query_type: Like
+      sql: "keep_salaries.position_name like ?"
+
+  birth_allowance:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "birth_allowances.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "birth_allowances.employee_no like ?"
+      desc: '根据员工编号查询'
+  dinner_person_setup:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "dinner_person_setups.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "dinner_person_setups.employee_no like ?"
+      desc: '根据员工编号查询'
+    is_suspend:
+      query_type: Boolean
+      type: Boolean
+      sql_true: "dinner_person_setups.is_suspend = 1"
+      sql_false: "dinner_person_setups.is_suspend = 0"
+      desc: "是否暂停发放"
+      example: true
+    is_employee_owned:
+      query_type: Like
+      type: Boolean
+      sql_true: "lower(dinner_person_setups.employee_no) like 'g%'"
+      sql_false: "lower(dinner_person_setups.employee_no) like 'w%'"
+      desc: "是否是员工持卡"
+      example: true
+    is_zombie:
+      query_type: Boolean
+      type: Boolean
+      sql_true: "dinner_person_setups.card_amount = 0 and dinner_person_setups.card_number = 0"
+      sql_false: "dinner_person_setups.card_amount > 0 or dinner_person_setups.card_number > 0"
+      desc: "是否是停发饭卡"
+      example: true
+    department_name:
+      query_type: Like
+      type: String
+      sql: "departments.name like ?"
+      desc: "根据部门名称模糊查询"
+  dinner_fee:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "dinner_fees.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "dinner_fees.employee_no like ?"
+      desc: '根据员工编号查询'
+  dinner_settle:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "dinner_settles.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "dinner_settles.employee_no like ?"
+      desc: '根据员工编号查询'
+  dinner_change:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "dinner_changes.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "dinner_changes.employee_no like ?"
+      desc: '根据员工编号查询'
+  night_fee:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "night_fees.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "night_fees.employee_no like ?"
+      desc: '根据员工编号查询'
+
+  birth_salary:
+    notes:
+      type: Boolean
+      query_type: Boolean
+      sql_true: "birth_salaries.notes != ''"
+      sql_false: "birth_salaries.notes = ''"
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "birth_salaries.employee_name like ?"
+      desc: '根据员工姓名模糊查询'
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "birth_salaries.employee_no like ?"
+      desc: '根据员工编号查询'
+    channel_ids:
+      query_type: In
+      type: Array-Integer
+      sql: 'birth_salaries.channel_id in (?)'
+      desc: '根据岗位通道查询'
+    month:
+      type: String
+      sql:  "birth_salaries.month = ?"
+    department_name:
+      type: String
+      query_type: Like
+      sql: "birth_salaries.department_name like ?"
+    position_name:
+      type: String
+      query_type: Like
+      sql: "birth_salaries.position_name like ?"
+
+  agreement:
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "agreements.employee_no like ?"
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "agreements.employee_name like ?"
+    department_name:
+      type: String
+      query_type: Like
+      sql: "agreements.department_name like ?"
+      desc: '根据岗位名称模糊查询'
+    end_date:
+      type: Range-Date
+      sql: "date(agreements.end_date) >= date(?) and date(agreements.end_date) <= date(?)"
+      min: ''
+      max: ''
+      desc: '根据合同到期时间查询'
+      sort: 'agreements.end_date'
+    department_ids:
+      query_type: In
+      type: Array-Integer
+      sql: "employees.department_id in (?)"
+      relation: 'employee'
+      desc: '根据多个部门id查询'
+
+  position_change_record:
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "employees.employee_no like ?"
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "employees.name like ?"
+
+  education_experience_record:
+    employee_name:
+      type: String
+      query_type: Like
+      sql: "education_experience_records.employee_name like ?"
+    employee_no:
+      type: String
+      query_type: Like
+      sql: "education_experience_records.employee_no like ?"
+    department_name:
+      query_type: Like
+      type: String
+      sql: "education_experience_records.department_name like ?"
+    change_date:
+      type: Range-Date
+      sql: "date(education_experience_records.change_date) >= date(?) and date(education_experience_records.change_date) <= date(?)"
+
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

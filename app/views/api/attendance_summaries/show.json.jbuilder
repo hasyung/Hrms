@@ -1,0 +1,35 @@
+json.attendance_summary do 
+  json.id @attendance_summary.id
+  json.department_name @attendance_summary.department_name
+  json.employee_id @attendance_summary.employee_id
+  json.employee_no @attendance_summary.employee_no
+  json.employee_name @attendance_summary.employee_name
+  json.labor_relation @attendance_summary.labor_relation
+  json.paid_leave @attendance_summary.paid_leave
+  json.sick_leave @attendance_summary.sick_leave
+  json.sick_leave_injury @attendance_summary.sick_leave_injury
+  json.sick_leave_nulliparous @attendance_summary.sick_leave_nulliparous
+  json.personal_leave @attendance_summary.personal_leave
+  json.home_leave @attendance_summary.home_leave
+  json.cultivate @attendance_summary.cultivate
+  json.evection @attendance_summary.evection
+  json.absenteeism @attendance_summary.absenteeism
+  json.late_or_leave @attendance_summary.late_or_leave
+  json.ground @attendance_summary.ground
+  json.surface_work @attendance_summary.surface_work
+  json.station_days @attendance_summary.station_days
+  json.station_place @attendance_summary.station_place
+  json.remark @attendance_summary.remark
+  json.annual_leave @attendance_summary.annual_leave
+  json.marriage_funeral_leave @attendance_summary.marriage_funeral_leave
+  json.prenatal_check_leave @attendance_summary.prenatal_check_leave
+  json.accredit_leave @attendance_summary.accredit_leave
+  json.rear_nurse_leave @attendance_summary.rear_nurse_leave
+  json.family_planning_leave @attendance_summary.family_planning_leave
+  json.women_leave @attendance_summary.women_leave
+  json.maternity_leave @attendance_summary.maternity_leave
+  json.recuperate_leave @attendance_summary.recuperate_leave
+  json.injury_leave @attendance_summary.injury_leave
+  json.lactation_leave @attendance_summary.lactation_leave
+  json.public_leave @attendance_summary.public_leave
+end

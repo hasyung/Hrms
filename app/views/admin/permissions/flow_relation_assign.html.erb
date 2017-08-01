@@ -1,0 +1,49 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+   设置类型： <%= select_tag :role_name, options_for_select(FlowRelation::ROLE_NAME, @role_name), onchange: "load_action(this.value)" %>
+  </div>
+
+  <table class="table table-bordered table-hover table-condensed">
+    <% @departments.each_with_index do |department, index| %>
+      <tr>
+        <td width="30%">
+          <div style="<%= judge_offset(department) %>">
+
+            <% if department.depth == 2 %>
+              <span style="font-weight:bold"><i class="fa fa-th-large"></i> <%= department.name %></span>
+            <% elsif department.depth == 3 %>
+              <span><i class="fa fa-th-list"></i> <%= department.name %></span>
+            <% elsif department.depth == 4 %>
+              <span><i class="fa fa-th"></i> <%= department.name %></span>
+            <% end %>
+          </div>
+        </td>
+
+        <% if judge_icon(@flow_relations, department) %>
+          <td class="item">
+            <% get_position_ids(@flow_relations, department).each do |position_id| %>
+              <div><%= @positions[position_id.to_i].name %>[<%= @positions[position_id.to_i].department.name %>]</div>
+            <% end %>
+          </td>
+          <td width="5%"><a class="btn btn-success btn-xs pull-right" href="<%=flow_relations_show_admin_permissions_path(id: department.id, role_name: @role_name)%>"><i class="fa fa-cog"></i> 更新</a></td>
+        <% else %>
+          <td></td>
+          <td width="5%"><a class="btn btn-primary btn-xs pull-right" href="<%=flow_relations_show_admin_permissions_path(id: department.id, role_name: @role_name)%>"><i class="fa fa-cog"></i> 设置</a></td>
+        <% end %>
+
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+<style>
+.item {
+  -webkit-column-count: 3;
+}
+</style>
+
+<script>
+function load_action(value){
+  location.href = "flow_relation_assign?role_name="+value;
+}
+</script>

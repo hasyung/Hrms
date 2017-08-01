@@ -1,0 +1,27 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <i class="fa fa-users"></i>
+    管理员列表
+    <%=@admins.size%> / <%=@employee_count%>
+  </div>
+  <table class="table table-bordered table-striped">
+    <tr>
+      <th class="text-center">姓名</th>
+      <th class="text-center">工号</th>
+      <th class="text-center">证件号</th>
+      <th class="text-center">上次登录地址</th>
+    </tr>
+    <%@admins.each do |employee|%>
+    <tr>
+      <td class="text-center">
+        <%=employee.name%>
+      </td>
+      <td class="text-center">
+        <%=employee.employee_no%>
+      </td>
+      <td class="text-center"><%=employee.identity_no%></td>
+      <td class="text-center"><%=employee.last_login_ip || "-"%></td>
+    </tr>
+    <%end%>
+  </table>
+</div>

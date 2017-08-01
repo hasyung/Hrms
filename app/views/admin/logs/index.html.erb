@@ -1,0 +1,25 @@
+<div class="panel panel-default">
+  <div class="panel-heading">日志列表</div>
+  <table class="table table-bordered table-striped">
+    <tr>
+      <th class="col-md-1 text-center">员工编号</th>
+      <th class="col-md-3 text-center">员工姓名</th>
+      <th class="col-md-5">请求控制器</th>
+      <th class="col-md-2 text-center">操作时间</th>
+      <th class="col-md-1 text-center">状态码</th>
+      <th class="col-md-2 text-center">操作</th>
+    </tr>
+    <% @logs.each do |log| %>
+      <tr>
+        <td class='col-md-1 text-center'><%= log.employee_no %></td>
+        <td class='col-md-3 text-center'><%= log.employee_name %></td>
+        <td class='col-md-5'><%= log.permission_message %></td>
+        <td class='col-md-2'><%= log.created_at %></td>
+        <td class='col-md-1 text-center'><%= log.response_status %></td>
+        <td class='col-md-2 text-center'><%= link_to '详情', admin_log_path(log), class: 'btn btn-xs btn-primary'  %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+<%= will_paginate(@logs) %>

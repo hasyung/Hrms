@@ -1,0 +1,30 @@
+<div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">外部应用接口列表</div>
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th>外接应用名称</th>
+        <th>公司名称</th>
+        <th>接口ip集合</th>
+        <th>推送地址</th>
+        <th>操作</th>
+      </tr>
+      <% @externals.each do |external| %>
+        <tr>
+          <td><%= external.application_name %></td>
+          <td><%= external.company_name %></td>
+          <td><%= external.client_ips.join(",") %></td>
+          <td><%= external.push_url %></td>
+          <td>
+            <%= link_to '查看', admin_external_application_path(external), class: 'btn btn-info btn-xs' %>
+            <%= link_to '编辑', edit_admin_external_application_path(external), class: 'btn btn-primary btn-xs' %>
+            <%= link_to '删除', admin_external_application_path(external), method: :delete, data: {confirm: '确认删除?'}, class: 'btn btn-danger btn-xs' %>
+            <%= link_to '调试', debug_admin_external_application_path(external), class: 'btn btn-success btn-xs' %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+
+  <%= link_to '新建', new_admin_external_application_path, class: 'btn btn-info' %>
+</div>

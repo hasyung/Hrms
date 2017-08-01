@@ -1,0 +1,134 @@
+zh_CN:
+  log:
+    departments:
+      create: '创建部门'
+      index: '部门列表'
+      show: '部门详情'
+      change_logs: '部门修改历史'
+      update: '更新部门信息'
+      destroy: '删除部门'
+      active: '部门变更生效'
+      revert: '部门变更撤销'
+      transfer: '部门划转'
+      export_to_xls: '部门导出EXCEL'
+
+    positions:
+      create: '创建岗位'
+      batch_destroy: '删除岗位'
+      update: '更新岗位'
+      export_to_xls: '岗位导出EXCEL'
+      export_specification_pdf: '岗位导出PDF'
+      adjust: '划转岗位'
+      index: '岗位列表'
+      show: '岗位详情'
+      employees: '岗位员工列表'
+      formerleaders: '岗位以前的领导'
+
+    employees:
+      index: '员工列表'
+      show: '员工信息'
+      resume: '员工简历'
+      export_to_xls: '员工导出EXCEL'
+      create: '新员工信息录入'
+      update: '员工信息更新'
+      export_resume: '导出员工简历'
+
+    employee_changes:
+      check: '员工待审核列表'
+      update: '修改员工待审核列表'
+      record: '员工变更记录列表'
+
+    position_changes:
+      index: '岗位异动记录列表'
+
+    enum:
+      index: '码表列表'
+
+    permissions:
+      index: '权限列表'
+
+    search_conditions:
+      index: '查询条件列表'
+      create: '保存用户的查询条件'
+      destroy: '删除用户的查询条件'
+
+    specifications:
+      create: '创建岗位说明书'
+      update: '更新岗位说明书'
+      show: '查看岗位说明书'
+
+    history/departments:
+      index: '部门历史数据'
+      export_to_xls: '部门历史数据导出EXCEL'
+
+    history/positions:
+      index: '岗位历史数据'
+      formerleaders: '岗位历史领导'
+
+    history/employees:
+      index: '员工历史数据'
+
+    me/education_experiences:
+      index: '员工教育经历列表'
+      create: '添加员工教育经'
+      update: '修改员工教育经'
+      destroy: '删除员工教育经'
+
+    me/familymembers:
+      index: '家庭成员列表'
+      create: '添加家庭成员'
+      update: '更新家庭成员'
+      destroy: '删除家庭成员'
+
+    me/work_experiences:
+      index: '工作经历列表'
+      create: '新增工作经历'
+      update: '更新工作经历'
+      destroy: '删除工作经历'
+
+    me/me:
+      show: '员工个人信息'
+      resume: '员工个人简历'
+      export_resume: '导出员工个人简历'
+      update: '更新员工个人信息'
+      update_password: '修改个人密码'
+      upload_favicon: '修改个人头像'
+
+    me/notifications:
+      index: '消息列表'
+      unread: '未读消息列表'
+      unread_count: '未读消息数量'
+      update: '设置消息为已读'
+
+    sort:
+      index: '部门岗位员工排序'
+
+    workflows:
+      show: '流程信息查看'
+      index: '流程列表'
+      create: '创建流程'
+      update: '更新流程'
+      record: '查看流程历史记录'
+
+    leave_employees:
+      index: '离开人员列表信息'
+      export_to_xls: '导出离开人员Excel'
+
+    contracts:
+      index: '合同列表'
+      create: '新建合同'
+
+    attendances:
+      index: '考勤记录列表'
+      create: '新增考勤记录'
+      update: '更新考勤记录'
+      destroy: '标记删除考勤记录'
+
+    session:
+      new: '访问登录页面'
+      create: '登录'
+      destroy: '登出'
+
+    home:
+      index: '访问主页'
+      metadata: '获取元数据'

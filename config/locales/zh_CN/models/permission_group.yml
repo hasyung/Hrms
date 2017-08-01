@@ -1,0 +1,8 @@
+zh_CN:
+  activerecord:
+    models:
+      permission_group: '权限组'
+    attributes:
+      permission_group:
+        name: '权限组名称'
+        permission_ids: "对应权限"

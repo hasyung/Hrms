@@ -1,0 +1,10 @@
+json.id education_experience.id
+json.school education_experience.school
+json.major education_experience.major
+json.admission_date education_experience.admission_date
+json.graduation_date education_experience.graduation_date
+json.education_background_id education_experience.education_background_id
+json.education_nature_id education_experience.education_nature_id
+json.degree_id education_experience.degree_id
+json.witness education_experience.witness
+json.category education_experience.category

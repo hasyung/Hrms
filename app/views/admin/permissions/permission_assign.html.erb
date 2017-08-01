@@ -1,0 +1,166 @@
+<div class="panel panel-default">
+  <div class="panel-heading">给员工分配权限</div>
+  <div class="panel-body">
+    <%= form_tag('/admin/permissions/grant_permission', method: 'post', class: 'form-horizontal') do %>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">员工</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="employee" placeholder="输入员工姓名搜索">
+          <input type="hidden" name="employee_id" id="employee_id">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">权限组</label>
+        <div class="item">
+          <% @permission_groups.each do |permission_group| %>
+            <div>
+              <label>
+                <input type="checkbox" class="permission_group" value="<%= permission_group.permission_ids.join(',') %>">
+                <%= permission_group.name %>
+              </label>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">权限结果</label>
+        <div class="item">
+          <% @permissions.each_with_index do |permission, idx| %>
+            <div>
+              <label>
+                <input type="checkbox" name="permission_ids[]" class='permission' data-permission-name=<%= "#{permission.controller}_#{permission.action}" %> value=<%= permission.id %> data-id=<%= permission.id %> >
+                <%= permission.name %>
+              </label>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <style>
+        .item {
+          -webkit-column-count: 4;
+        }
+      </style>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button class="btn btn-default btn-primary" type="submit">提交</button>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(function(){
+    // 屏蔽enter事件
+    $(window).keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
+
+    $("#employee").autocomplete({
+      source: function(request, response) {
+        $.ajax({
+          url: "/api/employees?&per_page=200&name=" + $('#employee').val(),
+          dataType: "json",
+          success: function(data) {
+            data = data.employees;
+            response($.map(data, function(v, i) {
+              return {
+                label: v.name + " "+ v.employee_no + " " + v.department.name,
+                value: v.employee_no,
+                name: v.name,
+                no: v.employee_no
+              };
+            }));
+          }
+        });
+      },
+      minLength: 1,
+      select: function(event, ui) {
+        $("#employee").val(ui.item.name);
+        $("#employee_id").val(ui.item.no);
+        $("#employee").trigger('change');
+        return false;
+      }
+    });
+
+    // 找到输入框的员工，并在结果集中显示该员工具有的权限
+    $('#employee').change(function() {
+      // 清除之前员工的权限组
+      $('input[data-id]').each(function(index, element){
+        $(element).prop("checked", false);
+      });
+
+      var employee_name = $(this).val();
+
+      $.ajax({
+        url: '/api/employees/permissions?name=' + employee_name,
+        type: 'get',
+        dataType: 'json',
+        success: function(data, textStatus, jqXHR) {
+          $("input[name=employee_id]").val(data["id"]);
+          $(data["permissions"]).each(function(index, value){
+            $('input[data-permission-name="'+value+'"]').prop("checked", true);
+          });
+          $(data["roles_permissions"]).each(function(index, value){
+            $('input[data-permission-name="'+value+'"]').attr('disabled', true);
+          });
+        },
+        error: function(data, textStatus, jqXHR) {
+          if(jqXHR == "Not Found"){
+            $('.content-container').prepend(
+              "<div class='alert alert-danger alert-dismissible' role='alert'>"
+                + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+                    + "<span aria-hidden='true'>&times;</span>"
+                + "</button>"
+                + "员工"+employee_name+"不存在"
+              + "</div>"
+            );
+          }
+        }
+      });
+    });
+
+    $('.permission_group').each(function(){
+      $(this).attr('data-cache','');
+    });
+
+    // 选择权限集合后，动态添加权限到权限集合中去
+    $('.permission_group').click(function(){
+      var permission_ids = $(this).val().split(',');
+      var cache = $(this).attr('data-cache').split(',');
+      var arr = []
+
+      if($(this).is(':checked')){
+        $(permission_ids).each(function(index, value){
+          arr.push($('input[data-id="'+value+'"]').is(':checked') && $('input[data-id="'+value+'"]').is(':disabled'));
+          $('input[data-id="'+value+'"]').prop("checked", true);
+        });
+        $(this).attr('data-cache', arr.join(','));
+      } else {
+        $(permission_ids).each(function(index, value){
+          var boo = false;
+          if(cache[index] == 'true'){
+            boo = true;
+          }
+          $('input[data-id="'+value+'"]').prop("checked", boo);
+        });
+        $(this).attr('data-cache',[]);
+      }
+    });
+
+    $('#get-all-permissions').click(function(){
+      if($(this).is(':checked')){
+        $('.permission').prop('checked', true);
+      } else {
+        $('.permission').prop('checked', false);
+      }
+    });
+  });
+</script>

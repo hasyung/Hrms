@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <title>人力资源管理系统</title>
+    <style type="text/css">
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+body,html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: RobotoDraft, Roboto, 'Microsoft YaHei', '微软雅黑', "Helvetica Neue", Helvetica , Arial, sans-serif;
+  font-size: 14px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.back {
+  position: relative;
+  background-image: url(<%= asset_url('login_1.jpg') %>);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.front {
+  background: url(<%= asset_url('login_front.png') %>) no-repeat center center;
+  position: absolute;
+  height: 900px;
+  width: 1440px;
+  left: 50%;
+  margin-left: -720px;
+}
+
+#plane {
+  position: absolute;
+  left: 1220px;
+  top: 408px;
+  -webkit-transform: rotate(35deg);
+  -moz-transform: rotate(35deg);
+  -ms-transform: rotate(35deg);
+  -o-transform: rotate(35deg);
+  transform: rotate(35deg);
+}
+
+.login-container {
+  width: 440px;
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  margin-left: -200px;
+  z-index: 2;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 2px 4px -1px rgba(0,0,0,.14),0 -3px 5px 0 rgba(0,0,0,.098),0 1px 9px 0 rgba(0,0,0,.084);
+}
+
+.logo {
+  background-color: #fc4f3f;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  padding: 12px 0;
+}
+
+.logo img {
+  display: block;
+  height: 66px;
+  margin: 0 auto;
+  width: 255px;
+}
+
+.form-wrapper {
+  background-color: rgb(255, 255, 255);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  padding: 35px 55px 70px;
+}
+
+.avatar-container {
+  position: relative;
+  border: 6px solid #fc4f3f;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
+
+.avatar-container .avatar {
+  height: 110px;
+  width: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -55px;
+  margin-left: -55px;
+}
+
+.avatar-container .avatar img {
+  width: 100%;
+}
+
+.error-tip {
+  color: #e84e40;
+  text-align: center;
+  margin-top: 10px;
+}
+
+
+/*css hack: 解决chrome 输入框自动记忆内容选出时 丑的不行的黄色背景的bug*/
+input:-webkit-autofill {
+  -webkit-transition: background-color 5000s ease-in-out 0s !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+.input-container {
+  margin-top: 30px;
+  position: relative;
+  -webkit-transform: translate(0, 0, 0) scale(1);
+  -moz-transform: translate(0, 0, 0) scale(1);
+  -ms-transform: translate(0, 0, 0) scale(1);
+  -o-transform: translate(0, 0, 0) scale(1);
+  transform: translate(0, 0, 0) scale(1);
+}
+
+.input-container input {
+  outline: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  font-size: 16px;
+  height: 50px;
+  padding: 0 15px;
+  line-height: 50px;
+  width: 100%;
+}
+
+.input-container input:focus {
+  border: 1px solid #fc4f3f;
+}
+
+
+.input-container input:focus+.focus-line {
+  width: 100%;
+}
+
+.input-container input:focus+.focus-line+label {
+  -webkit-transform: translate3d(0, -20px, 0) scale(.7);
+  -moz-transform: translate3d(0, -20px, 0) scale(.7);
+  -ms-transform: translate3d(0, -20px, 0) scale(.7);
+  -o-transform: translate3d(0, -20px, 0) scale(.7);
+  transform: translate3d(0, -20px, 0) scale(.7);
+}
+
+.input-container.has-value label {
+  -webkit-transform: translate3d(0, -20px, 0) scale(.7);
+  -moz-transform: translate3d(0, -20px, 0) scale(.7);
+  -ms-transform: translate3d(0, -20px, 0) scale(.7);
+  -o-transform: translate3d(0, -20px, 0) scale(.7);
+  transform: translate3d(0, -20px, 0) scale(.7);
+}
+
+.input-container .error {
+  color: #e84e40;
+  font-size: 12px;
+  position: absolute;
+  bottom: -20px;
+}
+
+.btn-group {
+  margin-top: 60px;
+  overflow: hidden;
+  zoom: 1;
+}
+
+.forget-pwd {
+  margin-top: 10px;
+  float: left;
+}
+
+.forget-pwd a {
+  color: #fc4f3f;
+}
+
+#login {
+  background-color: #fc4f3f;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 20px;
+  overflow: hidden;
+  height: 50px;
+  width: 100%;
+  zoom: 1;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+}
+
+svg * {
+  fill: #000;
+  opacity: .54;
+}
+
+.avatar.fly {
+  -webkit-transform-origin: center center;
+  transform-origin: center center;
+  -webkit-animation: coin .5s ease-in-out;
+  animation: coin .5s ease-in-out;
+}
+
+.version {
+  position: absolute;
+  color: #aa1a1a;
+  bottom: 30px;
+  right: 30px;
+}
+
+  @-webkit-keyframes coin {
+    0%, 30% {
+      -webkit-transform: scale(1.2) rotateY(0);
+      transform: scale(1.2) rotateY(0);
+    }
+
+    30%, 60% {
+      -webkit-transform: scale(1.3) rotateY(0);
+      transform: scale(1.3) rotateY(0);
+    }
+
+    60%, 90% {
+      -webkit-transform: scale(1) rotateY(-40deg);
+      transform: scale(1) rotateY(-40deg);
+    }
+
+    90%,95% {
+      -webkit-transform: scale(1.1) rotateY(40deg);
+      transform: scale(1.1) rotateY(40deg);
+    }
+
+    95%, 100% {
+      -webkit-transform: scale(1) rotateY(0);
+      transform: scale(1) rotateY(0);
+    }
+  }
+
+  @keyframes coin {
+    0%, 30% {
+      -webkit-transform: scale(1.2) rotateY(0);
+      transform: scale(1.2) rotateY(0);
+    }
+
+    30%, 60% {
+      -webkit-transform: scale(1.3) rotateY(0);
+      transform: scale(1.3) rotateY(0);
+    }
+
+    60%, 90% {
+      -webkit-transform: scale(1) rotateY(-40deg);
+      transform: scale(1) rotateY(-40deg);
+    }
+
+    90%,95% {
+      -webkit-transform: scale(1.1) rotateY(40deg);
+      transform: scale(1.1) rotateY(40deg);
+    }
+
+    95%, 100% {
+      -webkit-transform: scale(1) rotateY(0);
+      transform: scale(1) rotateY(0);
+    }
+  }
+    </style>
+  </head>
+  <body>
+    <div class="back">
+      <div class="front">
+        <!-- <img id="plane" src="<%= asset_url('plane.png') %>" alt="plane" width="120"/> -->
+      </div>
+      <div class="login-container">
+        <div class="logo">
+          <img src="<%= asset_url('logo_new_demo.png') %>" alt="logo"/>
+        </div>
+        <%= form_tag("/sessions") do %>
+          <div class="form-wrapper">
+            <div class="avatar-container">
+              <div class="avatar">
+                <img src=""/>
+              </div>
+            </div>
+            <% if flash[:error].present? %>
+              <div class="error-tip"><%= flash[:error] %></div>
+            <% end %>
+            <div class="input-container">
+              <input onblur="addAvatar()" name="user[employee_no]" type="text" id="user" placeholder="员工编号"/>
+            </div>
+            <div class="input-container">
+              <input name="user[password]" type="password" id="pwd" placeholder="密码"/>
+            </div>
+            <div class="forget-pwd">
+              <a href="#">忘记密码？</a>
+            </div>
+            <div class="btn-group">
+              <button id="login">登 录</button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <!-- <div class="version">
+        四川航空人力资源管理系统
+      </div> -->
+    </div>
+
+    <script type="text/javascript" src="<%= asset_url("jquery.min.js") %>"></script>
+    <script type="text/javascript">
+$(function(){
+  addAvatar();
+
+  if(window.localStorage){
+    var avatar_url =  localStorage.getItem('avatar_url');
+
+    if(avatar_url){
+      $('.avatar img').attr('src', avatar_url);
+    }
+  }
+});
+
+function addAvatar(){
+  var userInput = $('#user').val();
+  $.ajax({
+    type: "GET",
+    url: "<%= avatar_url_api_employees_path %>",
+    data: "employee_no=" + userInput,
+    success: function(msg){
+      if(msg.url){
+        $('.avatar img').attr('src',msg.url);
+        $('.avatar').addClass('fly');
+        setTimeout(function(){
+          $('.avatar').removeClass('fly');
+        },1500);
+      }else{
+        // $('.avatar img').attr('src','<%= asset_url("avatar-default.png") %>');
+        $('.avatar').addClass('fly');
+        setTimeout(function(){
+          $('.avatar').removeClass('fly');
+        },1500);
+      }
+    },
+    error: function(){
+
+    }
+  });
+}
+
+window.onload = function(){
+  document.getElementById('pwd').trigger('blur');
+  document.getElementById('user').trigger('blur')
+}
+
+    </script>
+  </body>
+</html>

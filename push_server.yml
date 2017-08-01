@@ -1,0 +1,11 @@
+development:
+  host: 192.168.6.99
+  port: 9927
+
+test:
+  host: 192.168.6.99
+  port: 9927
+
+production:
+  host: 192.168.6.99
+  port: 9927
